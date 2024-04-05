@@ -10,7 +10,7 @@ export default function CreatePage() {
         <h1 className="text-xl text-DarkGrey">devlinks</h1>
       </header>
 
-      <div className="md:w-[476px] flex flex-col gap-10 md:p-10 md:bg-White md:rounded-xl">
+      <section className="md:w-[476px] flex flex-col gap-10 md:p-10 md:bg-White md:rounded-xl">
         <div className="flex flex-col gap-2">
           <h2 className="text-[1.5rem] leading-[2.25rem] font-bold md:text-xl text-DarkGrey">
             Create account
@@ -50,7 +50,7 @@ export default function CreatePage() {
             </a>
           </p>
         </form>
-      </div>
+      </section>
     </main>
   );
 }
