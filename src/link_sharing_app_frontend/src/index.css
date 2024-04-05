@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: instrumentSans;
+  src: url(/fonts/static/InstrumentSans-Bold.ttf);
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: instrumentSans;
+  src: url(/fonts/static/InstrumentSans-SemiBold.ttf);
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: instrumentSans;
+  src: url(/fonts/static/InstrumentSans-Regular.ttf);
+  font-weight: 400;
+}
+
+body {
+  font-family: instrumentSans;
+}
