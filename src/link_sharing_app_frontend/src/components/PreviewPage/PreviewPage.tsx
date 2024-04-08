@@ -20,7 +20,13 @@ export default function PreviewPage() {
       </header>
       <main className="flex flex-col items-center gap-14 md:w-min md:mx-auto md:px-14 md:py-12 bg-White rounded-3xl md:shadow-[0_0px_32px_0px_rgba(0,0,0,0.10)]">
         <figure className="flex flex-col gap-6 items-center text-center">
-          <img src="/images/avatar.png" alt="" width={104} height={104} />
+          <img
+            src="/images/avatar.png"
+            alt=""
+            width={104}
+            height={104}
+            className="rounded-full border-[4px] bordrer-solid border-Purple"
+          />
           <figcaption className="flex flex-col gap-2">
             <h1 className="text-xl text-DarkGrey">Ben Wright</h1>
             <p className="text-base text-Grey">ben@example.com</p>
