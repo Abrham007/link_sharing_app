@@ -1,0 +1,80 @@
+export const LinkList = [
+  {
+    id: 1,
+    title: "GitHub",
+    color: "#1A1A1A",
+    icon: "./images/icon-github.svg",
+  },
+  {
+    id: 2,
+    title: "Frontend Mentor",
+    color: "#FFF",
+    icon: "./images/icon-frontend-mentor.svg",
+  },
+  {
+    id: 3,
+    title: "Twitter",
+    color: "#43B7E9",
+    icon: "./images/icon-twitter.svg",
+  },
+  {
+    id: 4,
+    title: "LinkedIn",
+    color: "#2D68FF",
+    icon: "./images/icon-linkedin.svg",
+  },
+  {
+    id: 5,
+    title: "YouTube",
+    color: "#EE3939",
+    icon: "./images/icon-youtube.svg",
+  },
+  {
+    id: 6,
+    title: "Facebook",
+    color: "#2442AC",
+    icon: "./images/icon-facebook.svg",
+  },
+  {
+    id: 7,
+    title: "Twitch",
+    color: "#EE3FC8",
+    icon: "./images/icon-twitch.svg",
+  },
+  {
+    id: 8,
+    title: "Dev.to",
+    color: "#333",
+    icon: "./images/icon-devto.svg",
+  },
+  {
+    id: 9,
+    title: "Codewars",
+    color: "#8A1A50",
+    icon: "./images/icon-codewars.svg",
+  },
+  {
+    id: 10,
+    title: "freeCodeCamp",
+    color: "#302267",
+    icon: "./images/icon-freecodecamp.svg",
+  },
+  {
+    id: 11,
+    title: "GitLab",
+    color: "#EB4925",
+    icon: "./images/icon-gitlab.svg",
+  },
+  {
+    id: 12,
+    title: "Hashnode",
+    color: "#0330D1",
+    icon: "./images/icon-hashnode.svg",
+  },
+  {
+    id: 13,
+    title: "Stack Overflow",
+    color: "#EC7100",
+    icon: "./images/icon-stack-overflow.svg",
+  },
+];
