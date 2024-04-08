@@ -1,5 +1,7 @@
+import { Outlet } from "react-router-dom";
 import CustomLinkPage from "./CustomLinkPage/CustomLinkPage";
 import DashboardHeader from "./DashboardHeader";
+import ProfileDetailsPage from "./ProfileDetailsPage/ProfileDetailsPage";
 
 export default function DashboardPage() {
   return (
@@ -9,7 +11,7 @@ export default function DashboardPage() {
         <section className="hidden flex-1 lg:flex justify-center items-center max-w-[560px] h-[834px] px-[25px] bg-White rounded-xl ">
           <img src="/images/illustration-phone-mockup.svg" alt="" />
         </section>
-        <CustomLinkPage></CustomLinkPage>
+        <Outlet></Outlet>
       </main>
     </div>
   );
