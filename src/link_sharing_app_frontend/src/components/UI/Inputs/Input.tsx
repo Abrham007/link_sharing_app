@@ -3,7 +3,7 @@ import { InputHTMLAttributes } from "react";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   name: string;
-  icon: string;
+  icon?: string;
 }
 
 export default function Input({ label, name, icon, ...props }: InputProps) {
@@ -13,7 +13,7 @@ export default function Input({ label, name, icon, ...props }: InputProps) {
         {label}
       </label>
       <div className="flex gap-3 items-center px-4 py-3 bg-White border-[1px] border-solid border-Borders hover:border-Purple rounded-lg">
-        <img src={icon} alt="" width={16} height={16}></img>
+        {icon && <img src={icon} alt="" width={16} height={16}></img>}
         <input
           {...props}
           id={name}
