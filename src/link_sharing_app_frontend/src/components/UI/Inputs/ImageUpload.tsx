@@ -1,14 +1,13 @@
-import Image from "next/image";
 export default function ImageUpload() {
   return (
     <div className="flex gap-8">
       <div className="px-[38px] py-[60px] flex gap-2 bg-LightPurple rounded-xl">
-        <Image
+        <img
           src="/images/icon-drag-and-drop.svg"
           alt=""
           width={12}
           height={6}
-        ></Image>
+        ></img>
         <p className="text-lg text-Purple">+ Upload Image</p>
       </div>
       <div className="flex items-center">

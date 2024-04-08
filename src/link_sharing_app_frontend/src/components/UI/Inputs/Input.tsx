@@ -18,7 +18,7 @@ export default function Input({ label, name, icon, ...props }: InputProps) {
           {...props}
           id={name}
           type="text"
-          className="w-full text-base text-DarkGrey bg-transparent"
+          className="w-full text-base text-DarkGrey bg-transparent border-none outline-none"
         />
         {false && (
           <span className="ml-auto text-sm text-Red shrink-0">
