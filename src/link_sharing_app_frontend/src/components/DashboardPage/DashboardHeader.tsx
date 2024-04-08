@@ -7,12 +7,12 @@ import DetailIcon from "../UI/Icons/DetailIcon";
 
 export default function DashboardHeader() {
   return (
-    <header className="w-full xl:max-w-[1392px]  flex justify-between p-4 pl-6 md:m-6 md:mb-0 lg:mx-auto bg-White md:rounded-xl">
+    <header className="w-full lg:max-w-[1392px] flex justify-between p-4 pl-6 lg:mx-auto bg-White md:rounded-xl">
       <div className="flex gap-2 items-center">
         <img src={logoIcon} alt="devlinks logo" width={40} height={40} />
         <h1 className="hidden md:block text-xl text-DarkGrey">devlinks</h1>
       </div>
-      <div className="flex ">
+      <nav className="flex ">
         <Tab>
           <LinkIcon></LinkIcon>
           <span className="hidden md:inline-block">Links</span>
@@ -21,7 +21,7 @@ export default function DashboardHeader() {
           <DetailIcon></DetailIcon>
           <span className="hidden md:inline-block">Profile Details</span>
         </Tab>
-      </div>
+      </nav>
 
       <Button kind="2">
         <img
