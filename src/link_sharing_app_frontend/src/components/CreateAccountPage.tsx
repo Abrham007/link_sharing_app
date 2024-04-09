@@ -1,11 +1,15 @@
 import logoIcon from "/images/logo-devlinks-small.svg";
 import Button from "./UI/Button/Button";
 import Input from "./UI/Inputs/Input";
-import { Link } from "react-router-dom";
 import { AuthClient } from "@dfinity/auth-client";
+import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
+import { useAuth } from "../hooks/useAuth";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function CreateAccountPage() {
-  async function loginWithInternetIdentity(e: any) {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  async function createWithInternetIdentity(e: any) {
     e.preventDefault();
 
     const authClient = await AuthClient.create();
@@ -16,11 +20,15 @@ export default function CreateAccountPage() {
       });
     });
 
-    const principalId = authClient.getIdentity().getPrincipal().toText();
-    console.log(principalId);
+    const identity: any = authClient.getIdentity();
+    const principalId = identity.getPrincipal();
+    console.log(principalId.toText());
+
+    let userCreated = await backend.createUser(principalId);
+    console.log(userCreated);
   }
 
-  async function loginWithEmail(e: any) {
+  async function createWithEmail(e: any) {
     e.preventDefault();
 
     const authClient = await AuthClient.create();
@@ -37,8 +45,19 @@ export default function CreateAccountPage() {
       });
     });
 
-    const principalId = authClient.getIdentity().getPrincipal().toText();
-    console.log(principalId);
+    const identity: any = authClient.getIdentity();
+    const principalId = identity.getPrincipal();
+    console.log(principalId.toText());
+
+    let userCreated = await backend.createUser(principalId);
+    console.log(userCreated);
+
+    if (userCreated) {
+      login(principalId.toText());
+      navigate("/dashboard/links");
+    } else {
+      navigate("/");
+    }
   }
   return (
     <main className="md:w-[476px] flex flex-col gap-10 md:p-10 md:bg-White md:rounded-xl">
@@ -52,7 +71,7 @@ export default function CreateAccountPage() {
       </div>
 
       <div className="flex flex-col gap-6">
-        <form onSubmit={loginWithEmail}>
+        <form onSubmit={createWithEmail}>
           <Button kind="1" className="flex gap-3 items-center justify-center">
             <img
               src="https://nfid.one/icons/favicon-96x96.png"
@@ -64,7 +83,7 @@ export default function CreateAccountPage() {
           </Button>
         </form>
 
-        <form onSubmit={loginWithInternetIdentity}>
+        <form onSubmit={createWithInternetIdentity}>
           <Button kind="2" className="flex gap-3 items-center justify-center">
             <img
               src="https://cryptologos.cc/logos/internet-computer-icp-logo.svg?v=029"

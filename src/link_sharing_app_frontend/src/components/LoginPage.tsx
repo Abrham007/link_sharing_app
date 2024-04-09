@@ -1,12 +1,15 @@
 import Input from "./UI/Inputs/Input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
 import { AuthClient } from "@dfinity/auth-client";
-import { Actor } from "@dfinity/agent";
-import { NFID } from "@nfid/embed";
+
 import Button from "./UI/Button/Button";
 
+import { useAuth } from "../hooks/useAuth";
+
 export default function LoginPage() {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   async function loginWithInternetIdentity(e: any) {
     e.preventDefault();
     const authClient = await AuthClient.create();
@@ -16,8 +19,12 @@ export default function LoginPage() {
       });
     });
 
-    const principalId = authClient.getIdentity().getPrincipal().toText();
-    console.log(principalId);
+    const identity = authClient.getIdentity();
+    const principalId = identity.getPrincipal();
+    console.log(principalId.toText());
+
+    let hasAccount = await backend.hasAccount(principalId);
+    console.log(hasAccount);
   }
 
   async function loginWithEmail(e: any) {
@@ -37,8 +44,19 @@ export default function LoginPage() {
       });
     });
 
-    const principalId = authClient.getIdentity().getPrincipal().toText();
-    console.log(principalId);
+    const identity = authClient.getIdentity();
+    const principalId = identity.getPrincipal();
+    console.log(principalId.toText());
+
+    let hasAccount = await backend.hasAccount(principalId);
+    console.log(hasAccount);
+
+    if (hasAccount) {
+      login(principalId.toText());
+      navigate("/dashboard/links");
+    } else {
+      navigate("/");
+    }
   }
   return (
     <main className="md:w-[476px] flex flex-col gap-10 md:p-10 md:bg-White md:rounded-xl">
@@ -60,7 +78,7 @@ export default function LoginPage() {
               width={20}
               height={20}
             />
-            Login with Email
+            Continue with Email
           </Button>
         </form>
 
@@ -72,7 +90,7 @@ export default function LoginPage() {
               width={20}
               height={20}
             />
-            Login with Internet Identity
+            Continue with Internet Identity
           </Button>
         </form>
 
