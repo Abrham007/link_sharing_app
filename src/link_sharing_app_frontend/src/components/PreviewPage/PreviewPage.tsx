@@ -1,4 +1,4 @@
-import Link from "../UI/Link/Link";
+import { Link } from "react-router-dom";
 import PreviewItem from "./PreviewItem";
 
 export default function PreviewPage() {
@@ -10,10 +10,16 @@ export default function PreviewPage() {
       ></div>
       <header className="w-full flex items-center justify-center p-6 bg-White rounded-xl">
         <nav className="w-full flex justify-between">
-          <Link href="/" kind="2" className="w-[160px]">
+          <Link
+            to="/dashboard/links"
+            className={`w-[160px] flex justify-center px-[27px] py-[11px] text-lg text-Purple bg-transparent hover:bg-LightPurple rounded-lg border border-solid border-Purple`}
+          >
             Back to Editor
           </Link>
-          <Link href="/" kind="1" className="w-[160px]">
+          <Link
+            to="/"
+            className={`w-[160px] flex justify-center px-[27px] py-[11px] text-lg text-White bg-Purple rounded-lg hover:bg-LightPurple`}
+          >
             Share Link
           </Link>
         </nav>
