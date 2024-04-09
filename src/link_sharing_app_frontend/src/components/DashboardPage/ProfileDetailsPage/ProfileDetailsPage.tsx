@@ -4,7 +4,7 @@ import ProfileForm from "./ProfileForm";
 export default function ProfileDetailsPage() {
   return (
     <div className="lg:flex-1 w-full  lg:max-w-[808px] h-[834px] bg-White rounded-xl">
-      <div className="flex flex-col gap-10 p-6 pb-0 md:p-10 md:pb-0">
+      <div className="flex flex-col gap-10 p-6 pb-0 md:p-9 md:pb-0 lg:p-10 lg:pb-0">
         <div className="flex flex-col gap-2">
           <h2 className="text-[1.5rem] leading-[2.25rem] font-bold md:text-xl text-DarkGrey">
             Profile Details
