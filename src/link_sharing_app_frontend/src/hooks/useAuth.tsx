@@ -1,15 +1,17 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import React, { createContext, useContext, useMemo, useState } from "react";
 
 const AuthContext = createContext({
   user: "",
-  login: () => {},
+  login: (s: string) => {},
   logout: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState("");
 
-  function login() {}
+  function login(userPrincipal: string) {
+    setUser(userPrincipal);
+  }
 
   function logout() {}
 
