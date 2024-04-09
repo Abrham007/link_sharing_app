@@ -8,37 +8,43 @@ import CustomLinkPage from "./DashboardPage/CustomLinkPage/CustomLinkPage";
 import ProfileDetailsPage from "./DashboardPage/ProfileDetailsPage/ProfileDetailsPage";
 import PreviewLayout from "./ProtectedLayout";
 import ProtectedLayout from "./ProtectedLayout";
+import AuthLayout from "./AuthLayout";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <RootLayout></RootLayout>,
-    children: [
-      { path: "", element: <LoginPage></LoginPage> },
-      {
-        path: "create-account",
-        element: <CreateAccounyPage></CreateAccounyPage>,
-      },
-    ],
-  },
-  {
-    path: "/dashboard",
-    element: <ProtectedLayout></ProtectedLayout>,
+    element: <AuthLayout></AuthLayout>,
     children: [
       {
-        path: "",
-        element: <DashboardLayout></DashboardLayout>,
+        path: "/",
+        element: <RootLayout></RootLayout>,
         children: [
-          { path: "links", element: <CustomLinkPage></CustomLinkPage> },
+          { path: "", element: <LoginPage></LoginPage> },
           {
-            path: "profile",
-            element: <ProfileDetailsPage></ProfileDetailsPage>,
+            path: "create-account",
+            element: <CreateAccounyPage></CreateAccounyPage>,
           },
         ],
       },
       {
-        path: "preview",
-        element: <PreviewPage></PreviewPage>,
+        path: "/dashboard",
+        element: <ProtectedLayout></ProtectedLayout>,
+        children: [
+          {
+            path: "",
+            element: <DashboardLayout></DashboardLayout>,
+            children: [
+              { path: "links", element: <CustomLinkPage></CustomLinkPage> },
+              {
+                path: "profile",
+                element: <ProfileDetailsPage></ProfileDetailsPage>,
+              },
+            ],
+          },
+          {
+            path: "preview",
+            element: <PreviewPage></PreviewPage>,
+          },
+        ],
       },
     ],
   },
