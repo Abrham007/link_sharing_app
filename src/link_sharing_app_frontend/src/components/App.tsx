@@ -1,43 +1,49 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CreateAccounyPage from "./CreateAccountPage";
 import DashboardLayout from "./DashboardPage/DashboardLayout";
 import LoginPage from "./LoginPage";
 import PreviewPage from "./PreviewPage/PreviewPage";
-import HomeLayout from "./HomeLayout";
+import RootLayout from "./RootLayout";
 import CustomLinkPage from "./DashboardPage/CustomLinkPage/CustomLinkPage";
 import ProfileDetailsPage from "./DashboardPage/ProfileDetailsPage/ProfileDetailsPage";
+import PreviewLayout from "./ProtectedLayout";
+import ProtectedLayout from "./ProtectedLayout";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <RootLayout></RootLayout>,
+    children: [
+      { path: "", element: <LoginPage></LoginPage> },
+      {
+        path: "create-account",
+        element: <CreateAccounyPage></CreateAccounyPage>,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: <ProtectedLayout></ProtectedLayout>,
+    children: [
+      {
+        path: "",
+        element: <DashboardLayout></DashboardLayout>,
+        children: [
+          { path: "links", element: <CustomLinkPage></CustomLinkPage> },
+          {
+            path: "profile",
+            element: <ProfileDetailsPage></ProfileDetailsPage>,
+          },
+        ],
+      },
+      {
+        path: "preview",
+        element: <PreviewPage></PreviewPage>,
+      },
+    ],
+  },
+]);
 
 export default function App() {
-  return (
-    <>
-      <Routes>
-        <Route path="/" element={<HomeLayout></HomeLayout>}>
-          <Route
-            index
-            element={<Navigate to="/kogin" replace></Navigate>}
-          ></Route>
-          <Route path="login" element={<LoginPage></LoginPage>}></Route>
-          <Route
-            path="create-account"
-            element={<CreateAccounyPage></CreateAccounyPage>}
-          ></Route>
-        </Route>
-        <Route path="dashboard" element={<DashboardLayout></DashboardLayout>}>
-          <Route
-            index
-            element={<Navigate to="/dashboard/links" replace></Navigate>}
-          ></Route>
-          <Route
-            path="links"
-            element={<CustomLinkPage></CustomLinkPage>}
-          ></Route>
-          <Route
-            path="profile"
-            element={<ProfileDetailsPage></ProfileDetailsPage>}
-          ></Route>
-          <Route path="preview" element={<PreviewPage></PreviewPage>}></Route>
-        </Route>
-      </Routes>
-    </>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
