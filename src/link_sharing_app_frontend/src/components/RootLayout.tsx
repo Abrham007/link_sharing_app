@@ -1,12 +1,11 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import logoIcon from "/images/logo-devlinks-small.svg";
 import { useAuth } from "../hooks/useAuth";
 
 export default function HomeLayout() {
   const { user } = useAuth();
-  const navigate = useNavigate();
   if (user) {
-    navigate("/dashboard/links");
+    return <Navigate to="/dashboard/links"></Navigate>;
   }
   return (
     <div className="min-h-screen flex flex-col gap-16 md:gap-[51px] md:justify-center md:items-center p-8 md:bg-LightGrey">
