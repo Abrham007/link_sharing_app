@@ -11,7 +11,7 @@ export default function Button({ children, kind, className }: ButtonProps) {
     case "1":
       return (
         <button
-          className={`w-full px-[27px] py-[11px] text-lg text-White bg-Purple rounded-lg hover:bg-LightPurple ${className}`}
+          className={`w-full px-3 py-[11px] text-lg text-White bg-Purple rounded-lg hover:bg-LightPurple ${className}`}
         >
           {children}
         </button>
@@ -19,7 +19,7 @@ export default function Button({ children, kind, className }: ButtonProps) {
     case "2":
       return (
         <button
-          className={`px-[27px] py-[11px] text-lg text-Purple bg-transparent hover:bg-LightPurple rounded-lg border border-solid border-Purple ${className}`}
+          className={`w-full px-3 py-[11px] text-lg text-Purple bg-transparent hover:bg-LightPurple rounded-lg border border-solid border-Purple ${className}`}
         >
           {children}
         </button>
