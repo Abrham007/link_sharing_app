@@ -6,11 +6,17 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   kind: string;
   className?: string;
 }
-export default function Button({ children, kind, className }: ButtonProps) {
+export default function Button({
+  children,
+  kind,
+  className,
+  ...props
+}: ButtonProps) {
   switch (kind) {
     case "1":
       return (
         <button
+          {...props}
           className={`w-full px-3 py-[11px] text-lg text-White bg-Purple rounded-lg hover:bg-LightPurple ${className}`}
         >
           {children}
@@ -19,6 +25,7 @@ export default function Button({ children, kind, className }: ButtonProps) {
     case "2":
       return (
         <button
+          {...props}
           className={`w-full px-3 py-[11px] text-lg text-Purple bg-transparent hover:bg-LightPurple rounded-lg border border-solid border-Purple ${className}`}
         >
           {children}
@@ -27,6 +34,7 @@ export default function Button({ children, kind, className }: ButtonProps) {
     default:
       return (
         <button
+          {...props}
           className={`w-full px-[27px] py-[11px] text-lg text-White bg-Purple rounded-lg hover:bg-LightPurple ${className}`}
         >
           {children}
