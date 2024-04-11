@@ -25,7 +25,7 @@ export default function TextInput({
           id={name}
           type="text"
           className="w-full text-base text-DarkGrey bg-transparent border-none outline-none"
-          {...register(`${name}`)}
+          {...register(`${name}`, { required: true })}
         />
         {error && (
           <span className="ml-auto text-sm text-Red shrink-0">
