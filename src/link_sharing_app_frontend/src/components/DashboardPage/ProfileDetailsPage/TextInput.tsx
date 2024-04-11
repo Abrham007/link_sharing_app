@@ -3,9 +3,17 @@ import { InputHTMLAttributes } from "react";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   name: string;
+  register: any;
+  error: any;
 }
 
-export default function TextInput({ label, name, ...props }: InputProps) {
+export default function TextInput({
+  label,
+  name,
+  register,
+  error,
+  ...props
+}: InputProps) {
   return (
     <div className=" flex flex-col md:flex-row gap-1 md:items-center md:justify-between">
       <label htmlFor={name} className="text-sm md:text-base text-Grey">
@@ -17,8 +25,9 @@ export default function TextInput({ label, name, ...props }: InputProps) {
           id={name}
           type="text"
           className="w-full text-base text-DarkGrey bg-transparent border-none outline-none"
+          {...register(`${name}`)}
         />
-        {false && (
+        {error && (
           <span className="ml-auto text-sm text-Red shrink-0">
             Please check again
           </span>
