@@ -16,12 +16,8 @@
       "type": "motoko"
     },
     "link_sharing_app_frontend": {
-      "dependencies": [
-        "link_sharing_app_backend"
-      ],
-      "source": [
-        "src/link_sharing_app_frontend/dist"
-      ],
+      "dependencies": ["link_sharing_app_backend"],
+      "source": ["src/link_sharing_app_frontend/dist"],
       "type": "assets",
       "workspace": "link_sharing_app_frontend"
     }
