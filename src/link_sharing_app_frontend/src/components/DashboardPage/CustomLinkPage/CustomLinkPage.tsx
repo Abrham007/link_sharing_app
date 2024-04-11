@@ -1,11 +1,15 @@
 import EmptyLinks from "./EmptyLinks";
 import Button from "../../UI/Button/Button";
-import LinkList from "./LinkList";
 import { useForm, useFieldArray } from "react-hook-form";
+import LinkItem from "./LinkItem";
 
 export default function CustomLinkPage() {
-  const defaultValue = {
-    links: [] as any,
+  type link = {
+    id: number;
+    href: string;
+  };
+  const defaultValue: { links: link[] } = {
+    links: [],
   };
   const {
     register,
@@ -21,22 +25,28 @@ export default function CustomLinkPage() {
   const { fields, append, remove } = useFieldArray({
     control,
     name: "links",
-    rules: { required: true },
   });
 
-  const watchItems = watch("links");
-  const controlledFields = fields.map((field, index) => {
-    return {
-      ...field,
-      ...watchItems[index],
-    };
-  });
+  // const watchItems = watch("links");
+  // const controlledFields = fields.map((field, index) => {
+  //   return {
+  //     ...field,
+  //     ...watchItems[index],
+  //   };
+  // });
 
-  function onSubmit(data: any) {}
+  function onSubmit(data: any) {
+    console.log(errors);
+    console.log(data);
+  }
+
+  function handleAdd() {
+    append({ id: 1, href: "" });
+  }
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="lg:flex-1 lg:max-w-[808px] h-[834px] bg-White rounded-xl"
+      className="lg:flex-1 lg:max-w-[808px] max-h-[834px] bg-White rounded-xl"
     >
       <div className="flex flex-col gap-6 p-6 pb-0 md:p-10 md:pb-0">
         <div className="flex flex-col gap-10 ">
@@ -44,18 +54,34 @@ export default function CustomLinkPage() {
             <h2 className="text-[1.5rem] leading-[2.25rem] font-bold md:text-xl text-DarkGrey">
               Customize your links
             </h2>
-            <p className="text-base text-Grey">
+            <p className="md:min-w-max text-base text-Grey">
               Add/edit/remove links below and then share all your profiles with
               the world!
             </p>
           </div>
-          <Button kind="2">+ Add new link</Button>
+          <Button type="button" onClick={handleAdd} kind="2">
+            + Add new link
+          </Button>
         </div>
-        {/* <EmptyLinks></EmptyLinks> */}
-        <LinkList controlledFields={controlledFields}></LinkList>
+        {fields.length > 0 ? (
+          <ul className="h-[510px] flex flex-col gap-6 pb-6 overflow-auto shrink-0">
+            {fields?.map((field, index) => (
+              <LinkItem
+                key={field.id}
+                index={index}
+                register={register}
+                errors={errors}
+                remove={remove}
+                control={control}
+              ></LinkItem>
+            ))}
+          </ul>
+        ) : (
+          <EmptyLinks></EmptyLinks>
+        )}
       </div>
 
-      <div className="flex md:justify-end p-4 md:px-10 md:py-6 border-t border-t-solid border-Borders">
+      <div className="flex md:justify-end p-4 md:px-10 md:py-6  border-t border-t-solid border-Borders">
         <Button kind="1" className="w-full md:w-min">
           Save
         </Button>
