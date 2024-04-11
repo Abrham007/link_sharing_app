@@ -1,7 +1,7 @@
 import Button from "../../UI/Button/Button";
 export default function EmptyLinks() {
   return (
-    <div className="flex flex-col gap-6 ">
+    <div className="flex flex-col gap-6 md:mb-10">
       <div className="h-[337px] md:h-[469px] flex flex-col justify-center items-center gap-6 md:gap-10 p-5 text-center bg-LightGrey rounded-xl">
         <img
           src="/images/illustration-empty.svg"
