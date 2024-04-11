@@ -1,7 +1,5 @@
 import { Outlet } from "react-router-dom";
-import CustomLinkPage from "./CustomLinkPage/CustomLinkPage";
 import DashboardHeader from "./DashboardHeader";
-import ProfileDetailsPage from "./ProfileDetailsPage/ProfileDetailsPage";
 
 export default function DashboardPage() {
   return (
