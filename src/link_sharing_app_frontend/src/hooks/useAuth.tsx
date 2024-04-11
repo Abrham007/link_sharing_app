@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
 
 const AuthContext = createContext({
-  user: "",
+  user: null,
   login: (s: string) => {},
   logout: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState("");
+  const [user, setUser]: [string | null, any] = useState(null);
 
   function login(userPrincipal: string) {
     setUser(userPrincipal);
