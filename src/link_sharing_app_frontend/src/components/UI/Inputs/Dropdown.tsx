@@ -5,10 +5,12 @@ export default function Dropdown({
   label,
   value,
   onChange,
+  handleLinkId,
 }: {
   label: string;
   value: number;
   onChange: (newId: number) => void;
+  handleLinkId: (newId: number) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -20,6 +22,7 @@ export default function Dropdown({
 
   function handleClick(newId: number) {
     onChange(newId);
+    handleLinkId(newId);
     setIsOpen(false);
   }
   return (
