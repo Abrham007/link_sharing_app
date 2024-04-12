@@ -16,6 +16,16 @@ export default function ProfileInputs({
   errors: any;
   control: any;
 }) {
+  let registerOption = {
+    firstName: { required: "Can’t be empty" },
+    lastName: { required: "Can’t be empty" },
+    email: {
+      pattern: {
+        value: /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,
+        message: "Incorrect email format",
+      },
+    },
+  };
   return (
     <div className="h-[600px] md:h-[580px] pb-6 overflow-auto flex flex-col gap-6">
       <Controller
@@ -33,6 +43,7 @@ export default function ProfileInputs({
           placeholder="e.g. John"
           register={register}
           error={errors.firstName}
+          validation={registerOption.firstName}
         ></TextInput>
         <TextInput
           label="Last name*"
@@ -40,6 +51,7 @@ export default function ProfileInputs({
           placeholder="e.g. Appleseed"
           register={register}
           error={errors.lastName}
+          validation={registerOption.lastName}
         ></TextInput>
         <TextInput
           type="email"
@@ -47,7 +59,8 @@ export default function ProfileInputs({
           name="email"
           placeholder="e.g. email@example.com"
           register={register}
-          error={errors.lastName}
+          error={errors.email}
+          validation={registerOption.email}
         ></TextInput>
       </div>
     </div>
