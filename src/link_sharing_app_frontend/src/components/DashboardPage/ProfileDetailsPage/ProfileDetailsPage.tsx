@@ -7,7 +7,7 @@ export default function ProfileDetailsPage() {
     firstName: "",
     lastName: "",
     email: "",
-    profilePic: new FileList(),
+    profilePic: "",
   };
   const {
     register,
