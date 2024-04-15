@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../../../hooks/useAuth";
+import { AuthContextType, useAuth } from "../../../hooks/useAuth";
 import Button from "../../UI/Button/Button";
 import ProfileInputs from "./ProfileInputs";
 import { useForm } from "react-hook-form";
@@ -9,16 +9,14 @@ import { useLoaderData, useRouteLoaderData } from "react-router-dom";
 import { UserData } from "../../../interface/UserData";
 
 export default function ProfileDetailsPage() {
-  const { user } = useAuth();
+  const { id, userData } = useAuth() as AuthContextType;
   const [isSending, setIsSending] = useState(false);
-  const data = useRouteLoaderData("user-data") as UserData;
-  console.log(data);
 
-  const defaultValue = data.profile ?? {
+  const defaultValue = userData?.profile ?? {
     firstName: "",
     lastName: "",
     email: "",
-    profilePic: "",
+    profilePic: [],
   };
 
   const {
@@ -34,11 +32,10 @@ export default function ProfileDetailsPage() {
   async function onSubmit(data: any) {
     let buffer = await data.profilePic.arrayBuffer();
     data.profilePic = [...new Uint8Array(buffer)];
-    console.log(data);
 
     setIsSending(true);
-    if (!user) return;
-    let principal: any = Principal.fromText(user);
+    if (!id) return;
+    let principal: any = Principal.fromText(id);
     await backend.addProfile(principal, data);
     setIsSending(false);
   }
