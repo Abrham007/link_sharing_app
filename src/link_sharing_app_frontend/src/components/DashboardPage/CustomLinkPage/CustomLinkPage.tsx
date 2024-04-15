@@ -2,7 +2,7 @@ import EmptyLinks from "./EmptyLinks";
 import Button from "../../UI/Button/Button";
 import { useForm, useFieldArray } from "react-hook-form";
 import LinkItem from "./LinkItem";
-import { useAuth } from "../../../hooks/useAuth";
+import { AuthContextType, useAuth } from "../../../hooks/useAuth";
 import { link_sharing_app_backend as backend } from "../../../../../declarations/link_sharing_app_backend";
 import { useState } from "react";
 import { Principal } from "@dfinity/principal";
@@ -11,13 +11,11 @@ import { UserData } from "../../../interface/UserData";
 import { LinkType } from "../../../interface/LinkType";
 
 export default function CustomLinkPage() {
-  const { user } = useAuth();
+  const { id, userData } = useAuth() as AuthContextType;
   const [isSending, setIsSending] = useState(false);
-  const data: UserData | any = useRouteLoaderData("user-data");
-  console.log(data);
 
   const defaultValue: { links: LinkType[] } = {
-    links: data?.links ?? [],
+    links: userData?.links ?? [],
   };
 
   const {
@@ -40,8 +38,8 @@ export default function CustomLinkPage() {
     console.log(data.links);
     try {
       setIsSending(true);
-      if (!user) return;
-      let principal: any = Principal.fromText(user);
+      if (!id) return;
+      let principal: any = Principal.fromText(id);
       let response = await backend.addLinks(principal, data.links);
       console.log(response);
       setIsSending(false);
