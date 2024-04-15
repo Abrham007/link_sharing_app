@@ -17,13 +17,13 @@ export default function LinkItem({
   remove: (i: number) => void;
   control: any;
 }) {
-  const [linkId, setLinkId] = useState(1);
+  const [linkId, setLinkId] = useState("link-1");
 
   let linkTitle = LinkList.find(
     (link) => link.id === linkId
   )?.title.toLowerCase();
 
-  function handleLinkId(id: number) {
+  function handleLinkId(id: string) {
     setLinkId(id);
   }
   return (

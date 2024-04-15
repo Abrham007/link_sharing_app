@@ -8,9 +8,9 @@ export default function Dropdown({
   handleLinkId,
 }: {
   label: string;
-  value: number;
-  onChange: (newId: number) => void;
-  handleLinkId: (newId: number) => void;
+  value: string;
+  onChange: (newId: string) => void;
+  handleLinkId: (newId: string) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -20,7 +20,7 @@ export default function Dropdown({
     setIsOpen((prevValue) => !prevValue);
   }
 
-  function handleClick(newId: number) {
+  function handleClick(newId: string) {
     onChange(newId);
     handleLinkId(newId);
     setIsOpen(false);

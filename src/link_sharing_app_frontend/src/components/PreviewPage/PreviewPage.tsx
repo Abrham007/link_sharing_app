@@ -39,9 +39,9 @@ export default function PreviewPage() {
           </figcaption>
         </figure>
         <ul className="flex flex-col gap-5">
-          <PreviewItem id={1}></PreviewItem>
-          <PreviewItem id={2}></PreviewItem>
-          <PreviewItem id={3}></PreviewItem>
+          <PreviewItem id={"l1"}></PreviewItem>
+          <PreviewItem id={"l2"}></PreviewItem>
+          <PreviewItem id={"l3"}></PreviewItem>
         </ul>
       </main>
     </div>
