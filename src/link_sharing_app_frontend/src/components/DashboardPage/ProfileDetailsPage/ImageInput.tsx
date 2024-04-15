@@ -1,6 +1,5 @@
 import React, { InputHTMLAttributes, useEffect, useState } from "react";
 import DropFile from "./DropFile";
-import { useRouteLoaderData } from "react-router-dom";
 
 interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
   value: any;
@@ -8,33 +7,22 @@ interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export default function ImageUpload({ value, onChange }: ImageInputProps) {
   const [imgUrl, setImgUrl] = useState("");
-  const data = useRouteLoaderData("user-data") as any;
 
   useEffect(() => {
     async function getUrlFromFile() {
-      let buffer = await value?.arrayBuffer();
-      let imageContent = new Uint8Array(buffer);
-      console.log(
-        new Blob([imageContent.buffer], { type: "image/jpeg,image/png" })
-      );
-      let imgUrl = URL.createObjectURL(
-        new Blob([imageContent.buffer], { type: "image/jpeg,image/png" })
-      );
+      let imgUrl = URL.createObjectURL(value);
       setImgUrl(imgUrl);
     }
 
     async function getUrlFromTypedArray() {
-      let imageContent = new Uint8Array(Array.from(data.profile.profilePic));
+      let imageContent = new Uint8Array(value);
       let imgUrl = URL.createObjectURL(
         new Blob([imageContent.buffer], { type: "image/jpeg" })
       );
       setImgUrl(imgUrl);
     }
 
-    if (
-      value.toString().slice(8, -1) === "Object" &&
-      Object.keys(value).length !== 0
-    ) {
+    if (value.length > 0) {
       getUrlFromTypedArray();
     } else if (value.toString().slice(8, -1) === "File") {
       getUrlFromFile();
