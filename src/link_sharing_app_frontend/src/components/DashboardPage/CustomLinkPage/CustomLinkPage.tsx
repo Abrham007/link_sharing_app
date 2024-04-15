@@ -2,15 +2,24 @@ import EmptyLinks from "./EmptyLinks";
 import Button from "../../UI/Button/Button";
 import { useForm, useFieldArray } from "react-hook-form";
 import LinkItem from "./LinkItem";
+import { useAuth } from "../../../hooks/useAuth";
+import { link_sharing_app_backend as backend } from "../../../../../declarations/link_sharing_app_backend";
+import { useState } from "react";
+import { Principal } from "@dfinity/principal";
+import { useOutletContext, useRouteLoaderData } from "react-router-dom";
+import { UserData } from "../../../interface/UserData";
+import { LinkType } from "../../../interface/LinkType";
 
 export default function CustomLinkPage() {
-  type link = {
-    id: number;
-    href: string;
+  const { user } = useAuth();
+  const [isSending, setIsSending] = useState(false);
+  const data: UserData | any = useRouteLoaderData("user-data");
+  console.log(data);
+
+  const defaultValue: { links: LinkType[] } = {
+    links: data?.links ?? [],
   };
-  const defaultValue: { links: link[] } = {
-    links: [],
-  };
+
   const {
     register,
     handleSubmit,
@@ -27,22 +36,24 @@ export default function CustomLinkPage() {
     name: "links",
   });
 
-  // const watchItems = watch("links");
-  // const controlledFields = fields.map((field, index) => {
-  //   return {
-  //     ...field,
-  //     ...watchItems[index],
-  //   };
-  // });
-
-  function onSubmit(data: any) {
-    console.log(errors);
-    console.log(data);
+  async function onSubmit(data: any) {
+    console.log(data.links);
+    try {
+      setIsSending(true);
+      if (!user) return;
+      let principal: any = Principal.fromText(user);
+      let response = await backend.addLinks(principal, data.links);
+      console.log(response);
+      setIsSending(false);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handleAdd() {
-    append({ id: 1, href: "" });
+    append({ id: "link-1", href: "" });
   }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -82,8 +93,8 @@ export default function CustomLinkPage() {
       </div>
 
       <div className="flex md:justify-end p-4 md:px-10 md:py-6  border-t border-t-solid border-Borders">
-        <Button kind="1" className="w-full md:w-min">
-          Save
+        <Button kind="1" className="w-full md:w-min" disabled={isSending}>
+          {isSending ? "Saving..." : "Save"}
         </Button>
       </div>
     </form>
