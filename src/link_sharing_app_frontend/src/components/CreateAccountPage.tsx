@@ -26,6 +26,13 @@ export default function CreateAccountPage() {
 
     let userCreated = await backend.createUser(principalId);
     console.log(userCreated);
+
+    if (userCreated) {
+      login(principalId.toText());
+      navigate("/dashboard/links");
+    } else {
+      navigate("/");
+    }
   }
 
   async function createWithEmail(e: any) {
