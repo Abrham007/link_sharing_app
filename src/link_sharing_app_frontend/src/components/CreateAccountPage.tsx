@@ -3,68 +3,24 @@ import Button from "./UI/Button/Button";
 import Input from "./UI/Inputs/Input";
 import { AuthClient } from "@dfinity/auth-client";
 import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
-import { useAuth } from "../hooks/useAuth";
+import { AuthContextType, useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
+import { connectToNFID } from "../util/nfid";
+import { connectToInternetIdentity } from "../util/internetidentity";
 
 export default function CreateAccountPage() {
-  const { login } = useAuth();
+  const { createAccount } = useAuth() as AuthContextType;
   const navigate = useNavigate();
-  async function createWithInternetIdentity(e: any) {
+  async function createWithInternetIdentity(e: React.BaseSyntheticEvent) {
     e.preventDefault();
 
-    const authClient = await AuthClient.create();
-
-    await new Promise((resolve) => {
-      authClient.login({
-        onSuccess: resolve,
-      });
-    });
-
-    const identity: any = authClient.getIdentity();
-    const principalId = identity.getPrincipal();
-    console.log(principalId.toText());
-
-    let userCreated = await backend.createUser(principalId);
-    console.log(userCreated);
-
-    if (userCreated) {
-      login(principalId.toText());
-      navigate("/dashboard/links");
-    } else {
-      navigate("/");
-    }
+    createAccount(connectToInternetIdentity);
   }
 
-  async function createWithEmail(e: any) {
+  async function createWithEmail(e: React.BaseSyntheticEvent) {
     e.preventDefault();
 
-    const authClient = await AuthClient.create();
-
-    const APP_NAME = "Link Sharing App";
-    const APP_LOGO = "https://nfid.one/icons/favicon-96x96.png";
-    const CONFIG_QUERY = `?applicationName=${APP_NAME}&applicationLogo=${APP_LOGO}`;
-    const identityProvider = `https://nfid.one/authenticate${CONFIG_QUERY}`;
-
-    await new Promise((resolve) => {
-      authClient.login({
-        identityProvider,
-        onSuccess: resolve,
-      });
-    });
-
-    const identity: any = authClient.getIdentity();
-    const principalId = identity.getPrincipal();
-    console.log(principalId.toText());
-
-    let userCreated = await backend.createUser(principalId);
-    console.log(userCreated);
-
-    if (userCreated) {
-      login(principalId.toText());
-      navigate("/dashboard/links");
-    } else {
-      navigate("/");
-    }
+    createAccount(connectToNFID);
   }
   return (
     <main className="md:w-[476px] flex flex-col gap-10 md:p-10 md:bg-White md:rounded-xl">
