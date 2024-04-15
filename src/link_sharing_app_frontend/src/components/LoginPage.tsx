@@ -2,14 +2,14 @@ import Input from "./UI/Inputs/Input";
 import { Link, useNavigate } from "react-router-dom";
 import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
 import { AuthClient } from "@dfinity/auth-client";
-
 import Button from "./UI/Button/Button";
-
 import { useAuth } from "../hooks/useAuth";
+import { Principal } from "@dfinity/principal";
 
 export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
+
   async function loginWithInternetIdentity(e: any) {
     e.preventDefault();
     const authClient = await AuthClient.create();
@@ -25,6 +25,13 @@ export default function LoginPage() {
 
     let hasAccount = await backend.hasAccount(principalId);
     console.log(hasAccount);
+
+    if (hasAccount) {
+      login(principalId.toText());
+      navigate("/dashboard/links");
+    } else {
+      navigate("/");
+    }
   }
 
   async function loginWithEmail(e: any) {
@@ -46,14 +53,16 @@ export default function LoginPage() {
 
     const identity = authClient.getIdentity();
     const principalId = identity.getPrincipal();
-    console.log(principalId.toText());
+    const principalText = principalId.toText();
+    console.log(principalText);
 
     let hasAccount = await backend.hasAccount(principalId);
     console.log(hasAccount);
 
     if (hasAccount) {
-      login(principalId.toText());
-      navigate("/dashboard/links");
+      login(principalText);
+      console.log("here");
+      navigate(`dashboard/links`);
     } else {
       navigate("/");
     }
