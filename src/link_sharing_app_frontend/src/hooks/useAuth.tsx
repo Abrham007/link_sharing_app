@@ -1,77 +1,102 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
 import { AuthClient } from "@dfinity/auth-client";
-import { useNavigate } from "react-router-dom";
-import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
-import { UserData } from "../interface/UserData";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import {
+  canisterId,
+  createActor,
+} from "../../../declarations/link_sharing_app_backend";
+import { Actor, Identity, IdentityDescriptor } from "@dfinity/agent";
 import { Principal } from "@dfinity/principal";
 
-export type AuthContextType = {
-  id: string | undefined;
-  userData: UserData | null;
-  login: (connect: () => Promise<AuthClient>) => {};
-  createAccount: (connect: () => Promise<AuthClient>) => {};
+const AuthContext = createContext({
+  isAuthenticated: false,
+  loginWithNFID: () => {},
+  loginWithInternetIdentity: () => {},
+  logout: () => {},
+  userActor: {},
+} as any);
+
+export function useAuthClient() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authClient, setAuthClient] = useState<AuthClient | null>(null);
+  const [identity, setIdentity] = useState<unknown | null>(null);
+  const [principal, setPrincipal] = useState<unknown | null>(null);
+  const [userActor, setUserActor] = useState<unknown | null>(null);
+
+  useEffect(() => {
+    AuthClient.create().then(async (client) => {
+      updateClient(client);
+    });
+  });
+
+  async function loginWithNFID() {
+    const APP_NAME = "Link Sharing App";
+    const APP_LOGO = "https://nfid.one/icons/favicon-96x96.png";
+    const CONFIG_QUERY = `?applicationName=${APP_NAME}&applicationLogo=${APP_LOGO}`;
+    const identityProvider = `https://nfid.one/authenticate${CONFIG_QUERY}`;
+
+    if (authClient) {
+      await new Promise((resolve) => {
+        authClient.login({
+          identityProvider,
+          onSuccess: resolve,
+        });
+      });
+      await updateClient(authClient);
+    }
+  }
+
+  async function loginWithInternetIdentity() {
+    if (authClient) {
+      await new Promise((resolve) => {
+        authClient.login({
+          onSuccess: resolve,
+        });
+      });
+      await updateClient(authClient);
+    }
+  }
+
+  async function logout() {
+    await authClient?.logout();
+    if (authClient) {
+      await updateClient(authClient);
+    }
+  }
+
+  async function updateClient(client: AuthClient) {
+    const isAuthenticated = await client.isAuthenticated();
+    setIsAuthenticated(isAuthenticated);
+
+    const identity = client.getIdentity();
+    setIdentity(identity);
+
+    const principal = identity.getPrincipal();
+    setPrincipal(principal);
+
+    setAuthClient(client);
+
+    const actor = createActor(canisterId, {
+      agentOptions: {
+        identity,
+      },
+    });
+    setUserActor(actor);
+  }
+
+  return {
+    isAuthenticated,
+    loginWithNFID,
+    loginWithInternetIdentity,
+    logout,
+    userActor,
+    principal,
+  };
+}
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const auth = useAuthClient();
+
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
 
-const AuthContext = createContext<AuthContextType | null>(null);
-
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [id, setId] = useState<string>();
-  const [userData, setUserData] = useState<UserData | null>(null);
-  const navigate = useNavigate();
-
-  async function login(connect: () => Promise<AuthClient>) {
-    const authClient = await connect();
-    let principalId = authClient.getIdentity().getPrincipal();
-    setId(principalId.toText());
-
-    let response = await backend.hasAccount(principalId);
-
-    if (response) {
-      let response = await backend.getUser(principalId);
-      setUserData(response);
-      console.log(userData);
-      navigate("/dashboard/links");
-    } else {
-      navigate("/");
-    }
-  }
-
-  async function createAccount(connect: () => Promise<AuthClient>) {
-    const authClient = await connect();
-    let principalId = authClient.getIdentity().getPrincipal();
-    setId(principalId.toText());
-
-    let response = await backend.createUser(principalId);
-    console.log(response);
-
-    if (response) {
-      let response = await backend.getUser(principalId);
-      setUserData(response);
-
-      navigate("/dashboard/links");
-    } else {
-      navigate("/");
-    }
-  }
-
-  const value = useMemo(
-    () => ({
-      id,
-      userData,
-      login,
-      createAccount,
-    }),
-    [userData]
-  );
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const useAuth = () => useContext(AuthContext);

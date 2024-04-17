@@ -3,24 +3,27 @@ import Button from "./UI/Button/Button";
 import Input from "./UI/Inputs/Input";
 import { AuthClient } from "@dfinity/auth-client";
 import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
-import { AuthContextType, useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
 import { connectToNFID } from "../util/nfid";
 import { connectToInternetIdentity } from "../util/internetidentity";
 
 export default function CreateAccountPage() {
-  const { createAccount } = useAuth() as AuthContextType;
+  const { loginWithNFID, loginWithInternetIdentity, userActor, principal } =
+    useAuth();
   const navigate = useNavigate();
-  async function createWithInternetIdentity(e: React.BaseSyntheticEvent) {
-    e.preventDefault();
 
-    createAccount(connectToInternetIdentity);
+  async function connectWithInternetIdentity(e: React.BaseSyntheticEvent) {
+    e.preventDefault();
+    await loginWithInternetIdentity();
   }
 
-  async function createWithEmail(e: React.BaseSyntheticEvent) {
+  async function connectWithNFID(e: React.BaseSyntheticEvent) {
     e.preventDefault();
+    await loginWithNFID();
 
-    createAccount(connectToNFID);
+    let userResponse = await backend.createUser(principal);
+    console.log(userResponse);
   }
   return (
     <main className="md:w-[476px] flex flex-col gap-10 md:p-10 md:bg-White md:rounded-xl">
@@ -34,8 +37,13 @@ export default function CreateAccountPage() {
       </div>
 
       <div className="flex flex-col gap-6">
-        <form onSubmit={createWithEmail}>
-          <Button kind="1" className="flex gap-3 items-center justify-center">
+        {false && <p className="text-base text-Grey">Sending...</p>}
+        <form onSubmit={connectToNFID}>
+          <Button
+            kind="1"
+            className="flex gap-3 items-center justify-center"
+            disabled={false}
+          >
             <img
               src="https://nfid.one/icons/favicon-96x96.png"
               alt=""
@@ -46,8 +54,12 @@ export default function CreateAccountPage() {
           </Button>
         </form>
 
-        <form onSubmit={createWithInternetIdentity}>
-          <Button kind="2" className="flex gap-3 items-center justify-center">
+        <form onSubmit={connectToInternetIdentity}>
+          <Button
+            kind="2"
+            className="flex gap-3 items-center justify-center"
+            disabled={false}
+          >
             <img
               src="https://cryptologos.cc/logos/internet-computer-icp-logo.svg?v=029"
               alt=""

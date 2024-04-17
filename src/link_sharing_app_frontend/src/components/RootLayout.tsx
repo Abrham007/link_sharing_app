@@ -3,8 +3,9 @@ import logoIcon from "/images/logo-devlinks-small.svg";
 import { useAuth } from "../hooks/useAuth";
 
 export default function HomeLayout() {
-  const { user } = useAuth();
-  if (user) {
+  const { isAuthenticated } = useAuth();
+
+  if (false) {
     return <Navigate to="/dashboard/links"></Navigate>;
   }
   return (
