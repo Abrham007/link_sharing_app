@@ -1,5 +1,7 @@
 import React, { InputHTMLAttributes, useEffect, useState } from "react";
 import DropFile from "./DropFile";
+import { useUserData } from "../../../hooks/useUserData";
+import { UserData } from "../../../interface/UserData";
 
 interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
   value: any;
@@ -7,11 +9,22 @@ interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export default function ImageUpload({ value, onChange }: ImageInputProps) {
   const [imgUrl, setImgUrl] = useState("");
+  const {setUserData} = useUserData()
 
   useEffect(() => {
     async function getUrlFromFile() {
       let imgUrl = URL.createObjectURL(value);
       setImgUrl(imgUrl);
+      let buffer = await value.arrayBuffer();
+      setUserData((prevValue: UserData) => {
+        return {
+          ...prevValue,
+          profile: {
+            ...prevValue.profile,
+            profilePic: new Uint8Array(buffer)
+          }
+        }
+      })
     }
 
     async function getUrlFromTypedArray() {
@@ -20,6 +33,15 @@ export default function ImageUpload({ value, onChange }: ImageInputProps) {
         new Blob([imageContent.buffer], { type: "image/jpeg" })
       );
       setImgUrl(imgUrl);
+      setUserData((prevValue: UserData) => {
+        return {
+          ...prevValue,
+          profile: {
+            ...prevValue.profile,
+            profilePic: imageContent
+          }
+        }
+      })
     }
 
     if (value.length > 0) {
