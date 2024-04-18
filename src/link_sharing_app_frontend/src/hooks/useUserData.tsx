@@ -10,12 +10,15 @@ export function UserDataContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { principal } = useAuth();
-  const [userData, setUserData] = useState<UserData>();
+  const { principal, isAuthenticated } = useAuth();
+  const [userData, setUserData] = useState<UserData | null>(null);
 
   async function getUserData() {
-    const userDataResponse = await backend.getUser(principal);
-    setUserData(userDataResponse);
+    if (isAuthenticated) {
+      const userDataResponse = await backend.getUser(principal);
+      setUserData(userDataResponse);
+      return userDataResponse;
+    }
   }
 
   return (
