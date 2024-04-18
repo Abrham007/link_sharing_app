@@ -9,7 +9,7 @@ interface ImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export default function ImageUpload({ value, onChange }: ImageInputProps) {
   const [imgUrl, setImgUrl] = useState("");
-  const {setUserData} = useUserData()
+  const { setUserData } = useUserData();
 
   useEffect(() => {
     async function getUrlFromFile() {
@@ -21,10 +21,10 @@ export default function ImageUpload({ value, onChange }: ImageInputProps) {
           ...prevValue,
           profile: {
             ...prevValue.profile,
-            profilePic: new Uint8Array(buffer)
-          }
-        }
-      })
+            profilePic: new Uint8Array(buffer),
+          },
+        };
+      });
     }
 
     async function getUrlFromTypedArray() {
@@ -38,10 +38,10 @@ export default function ImageUpload({ value, onChange }: ImageInputProps) {
           ...prevValue,
           profile: {
             ...prevValue.profile,
-            profilePic: imageContent
-          }
-        }
-      })
+            profilePic: imageContent,
+          },
+        };
+      });
     }
 
     if (value.length > 0) {
@@ -63,7 +63,7 @@ export default function ImageUpload({ value, onChange }: ImageInputProps) {
       <div className="flex flex-col md:flex-row gap-6 md:items-center">
         <DropFile
           handleDropFile={handleDropFile}
-          className={`relative px-[38px] py-[60px] flex flex-col gap-2 items-center  rounded-xl`}
+          className={`w-min relative px-[38px] py-[60px] flex flex-col gap-2 items-center  rounded-xl`}
         >
           {imgUrl && (
             <div className="absolute top-0 bottom-0 left-0 right-0 w-[193px] h-[193px] overflow-hidden rounded-xl ">
