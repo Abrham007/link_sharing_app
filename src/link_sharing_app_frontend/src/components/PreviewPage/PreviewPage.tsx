@@ -1,7 +1,15 @@
 import { Link } from "react-router-dom";
 import PreviewItem from "./PreviewItem";
+import { useUserData } from "../../hooks/useUserData";
+import { UserData } from "../../interface/UserData";
 
 export default function PreviewPage() {
+  const { userData }: { userData: UserData } = useUserData();
+  let imageContent = new Uint8Array(userData.profile.profilePic);
+  let imgUrl = URL.createObjectURL(
+    new Blob([imageContent.buffer], { type: "image/jpeg" })
+  );
+
   return (
     <div className="flex flex-col gap-[60px] md:gap-[126px] lg:gap-[106px] md:p-6">
       <div
@@ -27,21 +35,23 @@ export default function PreviewPage() {
       <main className="flex flex-col items-center gap-14 md:w-min md:mx-auto md:px-14 md:py-12 bg-White rounded-3xl md:shadow-[0_0px_32px_0px_rgba(0,0,0,0.10)]">
         <figure className="flex flex-col gap-6 items-center text-center">
           <img
-            src="/images/avatar.png"
+            src={imgUrl}
             alt=""
             width={104}
             height={104}
-            className="rounded-full border-[4px] bordrer-solid border-Purple"
+            className={`w-[104px] h-[104px]  rounded-full border-[4px] bordrer-solid border-Purple `}
           />
           <figcaption className="flex flex-col gap-2">
-            <h1 className="text-xl text-DarkGrey">Ben Wright</h1>
-            <p className="text-base text-Grey">ben@example.com</p>
+            <h1 className="text-xl text-DarkGrey">
+              {userData.profile.firstName} {userData.profile.lastName}
+            </h1>
+            <p className="text-base text-Grey">{userData.profile.email}</p>
           </figcaption>
         </figure>
         <ul className="flex flex-col gap-5">
-          <PreviewItem id={"l1"}></PreviewItem>
-          <PreviewItem id={"l2"}></PreviewItem>
-          <PreviewItem id={"l3"}></PreviewItem>
+          {userData.links.map((link) => (
+            <PreviewItem id={link.id}></PreviewItem>
+          ))}
         </ul>
       </main>
     </div>
