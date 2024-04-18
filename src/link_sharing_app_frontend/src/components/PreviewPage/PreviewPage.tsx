@@ -5,6 +5,9 @@ import { UserData } from "../../interface/UserData";
 
 export default function PreviewPage() {
   const { userData }: { userData: UserData } = useUserData();
+
+  let hasImage = userData?.profile?.profilePic.length > 0;
+
   let imageContent = new Uint8Array(userData.profile.profilePic);
   let imgUrl = URL.createObjectURL(
     new Blob([imageContent.buffer], { type: "image/jpeg" })
@@ -34,13 +37,15 @@ export default function PreviewPage() {
       </header>
       <main className="flex flex-col items-center gap-14 md:w-min md:mx-auto md:px-14 md:py-12 bg-White rounded-3xl md:shadow-[0_0px_32px_0px_rgba(0,0,0,0.10)]">
         <figure className="flex flex-col gap-6 items-center text-center">
-          <img
-            src={imgUrl}
-            alt=""
-            width={104}
-            height={104}
-            className={`w-[104px] h-[104px]  rounded-full border-[4px] bordrer-solid border-Purple `}
-          />
+          {hasImage && (
+            <img
+              src={imgUrl}
+              alt=""
+              width={104}
+              height={104}
+              className={`w-[104px] h-[104px]  rounded-full border-[4px] bordrer-solid border-Purple `}
+            />
+          )}
           <figcaption className="flex flex-col gap-2">
             <h1 className="text-xl text-DarkGrey">
               {userData.profile.firstName} {userData.profile.lastName}
@@ -49,8 +54,8 @@ export default function PreviewPage() {
           </figcaption>
         </figure>
         <ul className="flex flex-col gap-5">
-          {userData.links.map((link) => (
-            <PreviewItem id={link.id}></PreviewItem>
+          {userData.links.map((link, index) => (
+            <PreviewItem key={index} id={link.id}></PreviewItem>
           ))}
         </ul>
       </main>
