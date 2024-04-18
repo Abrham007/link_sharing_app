@@ -1,32 +1,32 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import CreateAccounyPage from "./CreateAccountPage";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import DashboardLayout from "./DashboardPage/DashboardLayout";
-import LoginPage from "./LoginPage";
 import PreviewPage from "./PreviewPage/PreviewPage";
-import RootLayout from "./RootLayout";
 import CustomLinkPage from "./DashboardPage/CustomLinkPage/CustomLinkPage";
 import ProfileDetailsPage from "./DashboardPage/ProfileDetailsPage/ProfileDetailsPage";
 import PreviewLayout from "./ProtectedLayout";
 import ProtectedLayout from "./ProtectedLayout";
-import AuthLayout from "./AuthLayout";
+import AuthenticationPage from "./AuthenticationPage";
+import RootLayout from "./RootLayout";
 
 const router = createBrowserRouter([
   {
-    element: <AuthLayout></AuthLayout>,
+    element: <RootLayout></RootLayout>,
+
     children: [
       {
-        path: "/",
-        element: <RootLayout></RootLayout>,
-        children: [
-          { path: "", element: <LoginPage></LoginPage> },
-          {
-            path: "create-account",
-            element: <CreateAccounyPage></CreateAccounyPage>,
-          },
-        ],
+        path: "*",
+        element: <Navigate to="auth/?mode=login"></Navigate>,
       },
       {
-        path: "/dashboard",
+        path: "auth",
+        element: <AuthenticationPage></AuthenticationPage>,
+      },
+      {
+        path: "dashboard",
         element: <ProtectedLayout></ProtectedLayout>,
         children: [
           {
