@@ -2,19 +2,21 @@ import EmptyLinks from "./EmptyLinks";
 import Button from "../../UI/Button/Button";
 import { useForm, useFieldArray } from "react-hook-form";
 import LinkItem from "./LinkItem";
-import { AuthContextType, useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 import { link_sharing_app_backend as backend } from "../../../../../declarations/link_sharing_app_backend";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Principal } from "@dfinity/principal";
 import { useOutletContext, useRouteLoaderData } from "react-router-dom";
 import { UserData } from "../../../interface/UserData";
 import { LinkType } from "../../../interface/LinkType";
+import { useUserData } from "../../../hooks/useUserData";
 
 export default function CustomLinkPage() {
-  const { id, userData } = useAuth() as AuthContextType;
+  const { principal } = useAuth();
+  const { userData, setUserData } = useUserData();
   const [isSending, setIsSending] = useState(false);
 
-  const defaultValue: { links: LinkType[] } = {
+  let defaultValue: { links: LinkType[] } = {
     links: userData?.links ?? [],
   };
 
@@ -34,12 +36,33 @@ export default function CustomLinkPage() {
     name: "links",
   });
 
+  const watchItems = watch("links");
+  const controlledFields = fields.map((field, index) => {
+    return {
+      ...field,
+      ...watchItems[index],
+    };
+  });
+
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      console.log(value, name, type);
+      if (name && value) {
+        setUserData((prevValue: UserData) => {
+          return {
+            ...prevValue,
+            links: value.links,
+          };
+        });
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   async function onSubmit(data: any) {
     console.log(data.links);
     try {
       setIsSending(true);
-      if (!id) return;
-      let principal: any = Principal.fromText(id);
       let response = await backend.addLinks(principal, data.links);
       console.log(response);
       setIsSending(false);

@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { AuthContextType, useAuth } from "../../../hooks/useAuth";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../../hooks/useAuth";
 import Button from "../../UI/Button/Button";
 import ProfileInputs from "./ProfileInputs";
 import { useForm } from "react-hook-form";
@@ -7,10 +7,12 @@ import { link_sharing_app_backend as backend } from "../../../../../declarations
 import { Principal } from "@dfinity/principal";
 import { useLoaderData, useRouteLoaderData } from "react-router-dom";
 import { UserData } from "../../../interface/UserData";
+import { useUserData } from "../../../hooks/useUserData";
 
 export default function ProfileDetailsPage() {
-  const { id, userData } = useAuth() as AuthContextType;
+  const { principal } = useAuth();
   const [isSending, setIsSending] = useState(false);
+  const { userData, setUserData } = useUserData();
 
   const defaultValue = userData?.profile ?? {
     firstName: "",
@@ -29,15 +31,33 @@ export default function ProfileDetailsPage() {
     defaultValues: defaultValue,
   });
 
-  async function onSubmit(data: any) {
-    let buffer = await data.profilePic.arrayBuffer();
-    data.profilePic = [...new Uint8Array(buffer)];
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) => {
+      if (name && value) {
+        setUserData((prevValue: UserData) => {
+          return {
+            ...prevValue,
+            profile: {
+              ...prevValue.profile,
+              [name]: value[name],
+            },
+          };
+        });
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
 
-    setIsSending(true);
-    if (!id) return;
-    let principal: any = Principal.fromText(id);
-    await backend.addProfile(principal, data);
-    setIsSending(false);
+  async function onSubmit(data: any) {
+    try {
+      setIsSending(true);
+      let buffer = await data.profilePic.arrayBuffer();
+      data.profilePic = [...new Uint8Array(buffer)];
+      await backend.addProfile(principal, data);
+      setIsSending(false);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
