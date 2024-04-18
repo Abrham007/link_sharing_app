@@ -22,7 +22,6 @@ export function useAuthClient() {
   const [principal, setPrincipal] = useState<unknown | null>(null);
   const [userActor, setUserActor] = useState<unknown | null>(null);
 
-  console.log(isAuthenticated);
   useEffect(() => {
     AuthClient.create().then(async (client) => {
       await updateClient(client);

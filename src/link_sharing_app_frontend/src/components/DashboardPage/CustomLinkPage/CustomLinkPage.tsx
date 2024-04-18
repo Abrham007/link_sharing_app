@@ -47,7 +47,6 @@ export default function CustomLinkPage() {
 
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
-      console.log(value, name, type);
       if (name && value) {
         setUserData((prevValue: UserData) => {
           return {
@@ -91,7 +90,7 @@ export default function CustomLinkPage() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="lg:flex-1 lg:max-w-[808px] max-h-[834px] bg-White rounded-xl"
+      className="lg:flex-1 w-full lg:max-w-[808px] max-h-[834px] bg-White rounded-xl"
     >
       <div className="flex flex-col gap-6 p-6 pb-0 md:p-10 md:pb-0">
         <div className="flex flex-col gap-10 ">
@@ -108,11 +107,12 @@ export default function CustomLinkPage() {
             + Add new link
           </Button>
         </div>
-        {!isLoading && fields.length > 0 && (
+        {!isLoading && controlledFields.length > 0 && (
           <ul className="h-[510px] flex flex-col gap-6 pb-6 overflow-auto shrink-0">
-            {fields?.map((field, index) => (
+            {controlledFields?.map((field, index) => (
               <LinkItem
-                key={field.id}
+                key={index}
+                field={field}
                 index={index}
                 register={register}
                 errors={errors}
