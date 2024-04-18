@@ -6,18 +6,20 @@ import { LinkList } from "../../../util/linkList";
 
 export default function LinkItem({
   index,
+  field,
   register,
   errors,
   remove,
   control,
 }: {
   index: number;
+  field: any;
   register: any;
   errors: any;
   remove: (i: number) => void;
   control: any;
 }) {
-  const [linkId, setLinkId] = useState("link-1");
+  const [linkId, setLinkId] = useState(field.id ?? "link-1");
 
   let linkTitle = LinkList.find(
     (link) => link.id === linkId
