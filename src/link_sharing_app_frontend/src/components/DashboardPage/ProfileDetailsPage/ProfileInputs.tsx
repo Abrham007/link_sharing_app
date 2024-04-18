@@ -27,7 +27,7 @@ export default function ProfileInputs({
     },
   };
   return (
-    <div className="h-[600px] md:h-[580px] pb-6 overflow-auto flex flex-col gap-6">
+    <div className="min-h-[600px] md:h-[580px] pb-6 overflow-auto flex flex-col gap-6">
       <Controller
         control={control}
         name="profilePic"
