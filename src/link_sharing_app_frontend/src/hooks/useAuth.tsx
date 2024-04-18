@@ -22,11 +22,12 @@ export function useAuthClient() {
   const [principal, setPrincipal] = useState<unknown | null>(null);
   const [userActor, setUserActor] = useState<unknown | null>(null);
 
+  console.log(isAuthenticated);
   useEffect(() => {
     AuthClient.create().then(async (client) => {
-      updateClient(client);
+      await updateClient(client);
     });
-  });
+  }, []);
 
   async function loginWithNFID() {
     const APP_NAME = "Link Sharing App";
