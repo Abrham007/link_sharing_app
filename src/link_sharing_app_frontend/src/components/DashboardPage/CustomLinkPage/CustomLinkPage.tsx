@@ -13,8 +13,9 @@ import { useUserData } from "../../../hooks/useUserData";
 
 export default function CustomLinkPage() {
   const { principal } = useAuth();
-  const { userData, setUserData } = useUserData();
+  const { userData, setUserData, getUserData } = useUserData();
   const [isSending, setIsSending] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   let defaultValue: { links: LinkType[] } = {
     links: userData?.links ?? [],
@@ -31,7 +32,7 @@ export default function CustomLinkPage() {
     defaultValues: defaultValue,
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, replace } = useFieldArray({
     control,
     name: "links",
   });
@@ -58,6 +59,18 @@ export default function CustomLinkPage() {
     });
     return () => subscription.unsubscribe();
   }, [watch]);
+
+  useEffect(() => {
+    async function fetchUserData() {
+      setIsLoading(true);
+      const { links } = await getUserData();
+      replace(links);
+      setIsLoading(false);
+    }
+    if (!userData) {
+      fetchUserData();
+    }
+  }, []);
 
   async function onSubmit(data: any) {
     console.log(data.links);
@@ -95,7 +108,7 @@ export default function CustomLinkPage() {
             + Add new link
           </Button>
         </div>
-        {fields.length > 0 ? (
+        {!isLoading && fields.length > 0 && (
           <ul className="h-[510px] flex flex-col gap-6 pb-6 overflow-auto shrink-0">
             {fields?.map((field, index) => (
               <LinkItem
@@ -108,9 +121,9 @@ export default function CustomLinkPage() {
               ></LinkItem>
             ))}
           </ul>
-        ) : (
-          <EmptyLinks></EmptyLinks>
         )}
+        {isLoading && <EmptyLinks purpose="loading"></EmptyLinks>}
+        {!isLoading && fields.length === 0 && <EmptyLinks></EmptyLinks>}
       </div>
 
       <div className="flex md:justify-end p-4 md:px-10 md:py-6  border-t border-t-solid border-Borders">
