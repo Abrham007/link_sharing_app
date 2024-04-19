@@ -2,9 +2,12 @@ import { Link } from "react-router-dom";
 import PreviewItem from "./PreviewItem";
 import { useUserData } from "../../hooks/useUserData";
 import { UserData } from "../../interface/UserData";
+import Message from "../Message";
+import { useState } from "react";
 
 export default function PreviewPage() {
   const { userData }: { userData: UserData } = useUserData();
+  const [openMessage, setOpenMessage] = useState(false);
 
   let hasImage = userData?.profile?.profilePic.length > 0;
 
@@ -12,6 +15,10 @@ export default function PreviewPage() {
   let imgUrl = URL.createObjectURL(
     new Blob([imageContent.buffer], { type: "image/jpeg" })
   );
+
+  function handleCloseMessage() {
+    setOpenMessage(false);
+  }
 
   return (
     <div className="flex flex-col gap-[60px] md:gap-[126px] lg:gap-[106px] md:p-6">
@@ -59,6 +66,14 @@ export default function PreviewPage() {
           ))}
         </ul>
       </main>
+
+      {openMessage && (
+        <Message
+          icon="/images/icon-link-copied-to-clipboard.svg"
+          text="The link has been copied to your clipboard!"
+          handleCloseMessage={handleCloseMessage}
+        ></Message>
+      )}
     </div>
   );
 }

@@ -8,11 +8,13 @@ import { Principal } from "@dfinity/principal";
 import { useLoaderData, useRouteLoaderData } from "react-router-dom";
 import { UserData } from "../../../interface/UserData";
 import { useUserData } from "../../../hooks/useUserData";
+import Message from "../../Message";
 
 export default function ProfileDetailsPage() {
   const { principal } = useAuth();
   const [isSending, setIsSending] = useState(false);
   const { userData, setUserData } = useUserData();
+  const [openMessage, setOpenMessage] = useState(false);
 
   const defaultValue = userData?.profile ?? {
     firstName: "",
@@ -51,19 +53,23 @@ export default function ProfileDetailsPage() {
   async function onSubmit(data: any) {
     try {
       setIsSending(true);
-      let buffer = await data.profilePic.arrayBuffer();
-      data.profilePic = [...new Uint8Array(buffer)];
+      data.profilePic = userData.profile.profilePic;
       await backend.addProfile(principal, data);
       setIsSending(false);
+      setOpenMessage(true);
     } catch (error) {
       console.log(error);
     }
   }
 
+  function handleCloseMessage() {
+    setOpenMessage(false);
+  }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="lg:flex-1 w-full  lg:max-w-[808px] h-[834px] bg-White rounded-xl"
+      className="lg:flex-1 w-full lg:max-w-[808px] h-auto lg:h-[834px] bg-White rounded-xl"
     >
       <div className="flex flex-col gap-10 p-6 pb-0 md:p-9 md:pb-0 lg:p-10 lg:pb-0">
         <div className="flex flex-col gap-2">
@@ -86,6 +92,14 @@ export default function ProfileDetailsPage() {
           {isSending ? "Saving..." : "Save"}
         </Button>
       </div>
+
+      {openMessage && (
+        <Message
+          icon="/images/icon-changes-saved.svg"
+          text="Your changes have been successfully saved!"
+          handleCloseMessage={handleCloseMessage}
+        ></Message>
+      )}
     </form>
   );
 }

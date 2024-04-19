@@ -10,12 +10,14 @@ import { useOutletContext, useRouteLoaderData } from "react-router-dom";
 import { UserData } from "../../../interface/UserData";
 import { LinkType } from "../../../interface/LinkType";
 import { useUserData } from "../../../hooks/useUserData";
+import Message from "../../Message";
 
 export default function CustomLinkPage() {
   const { principal } = useAuth();
   const { userData, setUserData, getUserData } = useUserData();
   const [isSending, setIsSending] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [openMessage, setOpenMessage] = useState(false);
 
   let defaultValue: { links: LinkType[] } = {
     links: userData?.links ?? [],
@@ -78,9 +80,14 @@ export default function CustomLinkPage() {
       let response = await backend.addLinks(principal, data.links);
       console.log(response);
       setIsSending(false);
+      setOpenMessage(true);
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function handleCloseMessage() {
+    setOpenMessage(false);
   }
 
   function handleAdd() {
@@ -131,6 +138,14 @@ export default function CustomLinkPage() {
           {isSending ? "Saving..." : "Save"}
         </Button>
       </div>
+
+      {openMessage && (
+        <Message
+          icon="/images/icon-changes-saved.svg"
+          text="Your changes have been successfully saved!"
+          handleCloseMessage={handleCloseMessage}
+        ></Message>
+      )}
     </form>
   );
 }
