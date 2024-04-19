@@ -5,26 +5,25 @@ import { useAuth } from "../hooks/useAuth";
 import { useUserData } from "../hooks/useUserData";
 import { useState } from "react";
 import logoIcon from "/images/logo-devlinks-small.svg";
+import { Principal } from "@dfinity/principal";
 
 export default function AuthenticationPage() {
   const {
     loginWithNFID,
     loginWithInternetIdentity,
     userActor,
-    principal,
-    isAuthenticated,
+    authenticate,
+    authClient,
+    logout,
   } = useAuth();
-
-  if (isAuthenticated) {
-    return <Navigate to="/dashboard/links"></Navigate>;
-  }
 
   const { getUserData } = useUserData();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
-  let isLogin = searchParams.get("mode") === "login";
+  let isLogin = searchParams.get("mode") !== "signup";
 
   let title = "Login";
   let subtitle = "Add your details below to get back into the app";
@@ -32,6 +31,8 @@ export default function AuthenticationPage() {
   let linkText = "Create account";
   let btnText = "Login";
   let actionFn = backend.hasAccount;
+  let errorRoute = "/auth/?mode=signup";
+  let errorMessage = "User already has an account please login";
 
   if (!isLogin) {
     title = "Create account";
@@ -40,39 +41,37 @@ export default function AuthenticationPage() {
     linkText = "Login";
     btnText = "Sign Up";
     actionFn = backend.createUser;
+    errorRoute = "/auth?mode=login";
+    errorMessage = "User does't not have an account please create an account";
   }
 
-  async function connectWithInternetIdentity(e: React.BaseSyntheticEvent) {
-    e.preventDefault();
+  async function handleLogin(fn: () => Promise<void>) {
     setIsLoading(true);
-    await loginWithInternetIdentity();
+    let principal: any = await fn();
 
-    let userResponse = await actionFn(principal);
+    console.log(principal.toText());
+    let response = await actionFn(principal);
+    console.log(response);
 
-    if (userResponse) {
-      await getUserData();
+    if (response) {
+      await authenticate(authClient);
       navigate("/dashboard/links");
       setIsLoading(false);
     } else {
-      navigate("/auth/?mode=signup");
+      await logout();
+      navigate(`${errorRoute}`);
+      setError(errorMessage);
+      setIsLoading(false);
     }
+  }
+  async function connectWithInternetIdentity(e: React.BaseSyntheticEvent) {
+    e.preventDefault();
+    handleLogin(loginWithInternetIdentity);
   }
 
   async function connectWithNFID(e: React.BaseSyntheticEvent) {
     e.preventDefault();
-    setIsLoading(true);
-    await loginWithNFID();
-
-    setIsLoading(true);
-    let userResponse = await actionFn(principal);
-
-    if (userResponse) {
-      await getUserData();
-      navigate("/dashboard/links");
-      setIsLoading(false);
-    } else {
-      navigate("/auth/?mode=signup");
-    }
+    handleLogin(loginWithNFID);
   }
 
   return (
@@ -82,18 +81,20 @@ export default function AuthenticationPage() {
         <h1 className="text-xl text-DarkGrey">devlinks</h1>
       </header>
 
-      <main className="md:w-[476px] flex flex-col gap-10 md:p-10 md:bg-White md:rounded-xl">
+      <main
+        className={`md:w-[476px] flex flex-col gap-10 md:p-10 md:bg-White md:rounded-xl ${
+          error ? "border border-solid border-Red" : ""
+        } `}
+      >
         <div className="flex flex-col gap-2">
           <h2 className="text-[1.5rem] leading-[2.25rem] font-bold md:text-xl text-DarkGrey">
-            {title}
+            {isLoading ? "Receiving..." : title}
           </h2>
           <p className="text-base text-Grey">{subtitle}</p>
+          {error && <p className="text-base text-Red ">{errorMessage}</p>}
         </div>
 
         <div className="flex flex-col gap-6">
-          {isLoading && (
-            <p className="text-base text-Grey text-center">Loading...</p>
-          )}
           <form onSubmit={connectWithNFID}>
             <Button
               kind="1"
