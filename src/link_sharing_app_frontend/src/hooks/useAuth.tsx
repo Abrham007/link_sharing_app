@@ -23,37 +23,53 @@ export function useAuthClient() {
   const [userActor, setUserActor] = useState<unknown | null>(null);
 
   useEffect(() => {
-    AuthClient.create().then(async (client) => {
+    async function initauthClient() {
+      let client = await AuthClient.create();
       await updateClient(client);
-    });
+      await authenticate(client);
+    }
+
+    initauthClient();
   }, []);
 
   async function loginWithNFID() {
+    if (!authClient) {
+      return;
+    }
+
     const APP_NAME = "Link Sharing App";
     const APP_LOGO = "https://nfid.one/icons/favicon-96x96.png";
     const CONFIG_QUERY = `?applicationName=${APP_NAME}&applicationLogo=${APP_LOGO}`;
     const identityProvider = `https://nfid.one/authenticate${CONFIG_QUERY}`;
 
-    if (authClient) {
-      await new Promise((resolve) => {
-        authClient.login({
-          identityProvider,
-          onSuccess: resolve,
-        });
+    await new Promise((resolve) => {
+      authClient.login({
+        identityProvider,
+        onSuccess: resolve,
       });
-      await updateClient(authClient);
-    }
+    });
+    await updateClient(authClient);
+    const identity = authClient.getIdentity();
+    const principal = identity.getPrincipal();
+
+    return principal;
   }
 
   async function loginWithInternetIdentity() {
-    if (authClient) {
-      await new Promise((resolve) => {
-        authClient.login({
-          onSuccess: resolve,
-        });
-      });
-      await updateClient(authClient);
+    if (!authClient) {
+      return;
     }
+
+    await new Promise((resolve) => {
+      authClient.login({
+        onSuccess: resolve,
+      });
+    });
+    await updateClient(authClient);
+    const identity = authClient.getIdentity();
+    const principal = identity.getPrincipal();
+
+    return principal;
   }
 
   async function logout() {
@@ -63,10 +79,12 @@ export function useAuthClient() {
     }
   }
 
-  async function updateClient(client: AuthClient) {
+  async function authenticate(client: AuthClient) {
     const isAuthenticated = await client.isAuthenticated();
     setIsAuthenticated(isAuthenticated);
+  }
 
+  async function updateClient(client: AuthClient) {
     const identity = client.getIdentity();
     setIdentity(identity);
 
@@ -85,6 +103,8 @@ export function useAuthClient() {
 
   return {
     isAuthenticated,
+    authenticate,
+    authClient,
     loginWithNFID,
     loginWithInternetIdentity,
     logout,
