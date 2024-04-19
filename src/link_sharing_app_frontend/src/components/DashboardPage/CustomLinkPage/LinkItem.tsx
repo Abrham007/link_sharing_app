@@ -59,7 +59,7 @@ export default function LinkItem({
 
       <Input
         label="Link"
-        name="href"
+        name={`links.${index}.href`}
         placeholder="e.g. https://www.github.com/johnappleseed"
         icon="/images/icon-link.svg"
         index={index}
