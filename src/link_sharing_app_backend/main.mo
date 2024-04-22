@@ -1,10 +1,7 @@
 import Principal "mo:base/Principal";
 import Bool "mo:base/Bool";
-import Debug "mo:base/Debug";
-import Nat "mo:base/Nat";
 import List "mo:base/List";
 import Text "mo:base/Text";
-import Blob "mo:base/Blob";
 import Nat8 "mo:base/Nat8";
 import HashMap "mo:base/HashMap";
 import Iter "mo:base/Iter";
