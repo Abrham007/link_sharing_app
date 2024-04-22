@@ -78,8 +78,7 @@ export default function LinkPage() {
     console.log(data.links);
     try {
       setIsSending(true);
-      let response = await backend.addLinks(principal, data.links);
-      console.log(response);
+      await backend.addLinks(principal, data.links);
       setIsSending(false);
       setOpenMessage({
         text: "Your changes have been successfully saved!",

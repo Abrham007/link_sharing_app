@@ -22,7 +22,7 @@ export default function AuthenticationPage() {
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
-  let isLogin = searchParams.get("mode") === "login";
+  let isLogin = searchParams.get("mode") !== "signup";
 
   let title = "Login";
   let subtitle = "Add your details below to get back into the app";
