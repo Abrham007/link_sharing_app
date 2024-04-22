@@ -17,7 +17,10 @@ export default function CustomLinkPage() {
   const { userData, setUserData, getUserData } = useUserData();
   const [isSending, setIsSending] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [openMessage, setOpenMessage] = useState(false);
+  const [openMessage, setOpenMessage] = useState<{
+    text: string;
+    error: boolean;
+  } | null>(null);
 
   let defaultValue: { links: LinkType[] } = {
     links: userData?.links ?? [],
@@ -80,14 +83,20 @@ export default function CustomLinkPage() {
       let response = await backend.addLinks(principal, data.links);
       console.log(response);
       setIsSending(false);
-      setOpenMessage(true);
+      setOpenMessage({
+        text: "Your changes have been successfully saved!",
+        error: false,
+      });
     } catch (error) {
-      console.log(error);
+      setOpenMessage({
+        text: "Your changes could not be saved!. Please try again",
+        error: true,
+      });
     }
   }
 
   function handleCloseMessage() {
-    setOpenMessage(false);
+    setOpenMessage(null);
   }
 
   function handleAdd() {
@@ -142,7 +151,8 @@ export default function CustomLinkPage() {
       {openMessage && (
         <Message
           icon="/images/icon-changes-saved.svg"
-          text="Your changes have been successfully saved!"
+          text={openMessage.text}
+          error={openMessage.error}
           handleCloseMessage={handleCloseMessage}
         ></Message>
       )}
