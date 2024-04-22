@@ -11,6 +11,7 @@ export default function AuthenticationPage() {
   const {
     loginWithNFID,
     loginWithInternetIdentity,
+    loginWithDummyAccount,
     userActor,
     authenticate,
     authClient,
@@ -74,6 +75,12 @@ export default function AuthenticationPage() {
     handleLogin(loginWithNFID);
   }
 
+  async function connectWithDummyAccount(e: React.BaseSyntheticEvent) {
+    e.preventDefault();
+    loginWithDummyAccount();
+    navigate("/dashboard/links");
+  }
+
   return (
     <div className="min-h-screen flex flex-col gap-16 md:gap-[51px] md:justify-center md:items-center p-8 md:bg-LightGrey">
       <header className="flex gap-2 items-center">
@@ -113,7 +120,7 @@ export default function AuthenticationPage() {
 
           <form onSubmit={connectWithInternetIdentity}>
             <Button
-              kind="2"
+              kind="1"
               className="flex gap-3 items-center justify-center"
               disabled={isLoading}
             >
@@ -126,6 +133,27 @@ export default function AuthenticationPage() {
               {btnText} with Internet Identity
             </Button>
           </form>
+
+          {isLogin && (
+            <form onSubmit={connectWithDummyAccount}>
+              <Button
+                kind="2"
+                className="flex gap-3 items-center justify-center"
+                disabled={isLoading}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 21 20"
+                  className="fill-Purple "
+                >
+                  <path d="M10.5 1.563A8.437 8.437 0 1 0 18.938 10 8.447 8.447 0 0 0 10.5 1.562ZM6.716 15.357a4.688 4.688 0 0 1 7.568 0 6.54 6.54 0 0 1-7.568 0Zm1.596-5.982a2.188 2.188 0 1 1 4.376 0 2.188 2.188 0 0 1-4.376 0Zm7.344 4.683a6.523 6.523 0 0 0-2.265-1.83 4.062 4.062 0 1 0-5.782 0 6.522 6.522 0 0 0-2.265 1.83 6.562 6.562 0 1 1 10.304 0h.008Z" />
+                </svg>
+                Login with Dummy Account
+              </Button>
+            </form>
+          )}
 
           <p className="w-[70%] md:w-full text-base text-Grey self-center text-center">
             {question}{" "}
