@@ -59,6 +59,7 @@ export default function DashboardPreview() {
                 <PreviewItem
                   key={index}
                   id={link.id}
+                  href={link.href}
                   page="dashboard"
                 ></PreviewItem>
               ))}

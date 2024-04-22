@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
-import PreviewItem from "./PreviewItem";
+import PreviewItem from "../components/PreviewItem";
 import { useUserData } from "../hooks/useUserData";
 import { UserData } from "../interface/UserData";
-import Message from "./Message";
+import Message from "../components/Message";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import Button from "./UI/Button/Button";
+import Button from "../components/UI/Button/Button";
 
 export default function PreviewPage() {
   const { userData }: { userData: UserData } = useUserData();
@@ -85,7 +85,11 @@ export default function PreviewPage() {
         </figure>
         <ul className="flex flex-col gap-5">
           {userData.links.map((link, index) => (
-            <PreviewItem key={index} id={link.id}></PreviewItem>
+            <PreviewItem
+              key={index}
+              id={link.id}
+              href={link.href}
+            ></PreviewItem>
           ))}
         </ul>
       </main>

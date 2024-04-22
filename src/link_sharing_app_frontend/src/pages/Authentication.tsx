@@ -1,6 +1,6 @@
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
-import Button from "./UI/Button/Button";
+import Button from "../components/UI/Button/Button";
 import { useAuth } from "../hooks/useAuth";
 import { useUserData } from "../hooks/useUserData";
 import { useState } from "react";

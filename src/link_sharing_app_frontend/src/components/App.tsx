@@ -4,15 +4,15 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import DashboardLayout from "./DashboardPage/DashboardLayout";
-import PreviewPage from "./PreviewPage";
-import CustomLinkPage from "./DashboardPage/CustomLinkPage/CustomLinkPage";
-import ProfileDetailsPage from "./DashboardPage/ProfileDetailsPage/ProfileDetailsPage";
+import PreviewPage from "../pages/Preview";
+import LinkPage from "../pages/Link";
+import ProfilePage from "../pages/Profile";
 import PreviewLayout from "./ProtectedLayout";
 import ProtectedLayout from "./ProtectedLayout";
-import AuthenticationPage from "./AuthenticationPage";
+import AuthenticationPage from "../pages/Authentication";
 import RootLayout from "./RootLayout";
 import AuthLayout from "./AuthLayout";
-import UserPage from "./UserPage";
+import UserPage from "../pages/User";
 
 const router = createBrowserRouter([
   {
@@ -45,10 +45,10 @@ const router = createBrowserRouter([
             path: "",
             element: <DashboardLayout></DashboardLayout>,
             children: [
-              { path: "links", element: <CustomLinkPage></CustomLinkPage> },
+              { path: "links", element: <LinkPage></LinkPage> },
               {
                 path: "profile",
-                element: <ProfileDetailsPage></ProfileDetailsPage>,
+                element: <ProfilePage></ProfilePage>,
               },
             ],
           },

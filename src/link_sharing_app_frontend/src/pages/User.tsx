@@ -1,4 +1,4 @@
-import PreviewItem from "./PreviewItem";
+import PreviewItem from "../components/PreviewItem";
 import { UserData } from "../interface/UserData";
 import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
 import { Link, useParams } from "react-router-dom";

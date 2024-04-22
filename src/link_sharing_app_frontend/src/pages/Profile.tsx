@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../../../hooks/useAuth";
-import Button from "../../UI/Button/Button";
-import ProfileInputs from "./ProfileInputs";
+import { useAuth } from "../hooks/useAuth";
+import Button from "../components/UI/Button/Button";
+import ProfileInputs from "../components/DashboardPage/ProfilePage/ProfileInputs";
 import { useForm } from "react-hook-form";
-import { link_sharing_app_backend as backend } from "../../../../../declarations/link_sharing_app_backend";
+import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
 import { Principal } from "@dfinity/principal";
 import { useLoaderData, useRouteLoaderData } from "react-router-dom";
-import { UserData } from "../../../interface/UserData";
-import { useUserData } from "../../../hooks/useUserData";
-import Message from "../../Message";
+import { UserData } from "../interface/UserData";
+import { useUserData } from "../hooks/useUserData";
+import Message from "../components/Message";
 
-export default function ProfileDetailsPage() {
+export default function ProfilePage() {
   const { principal } = useAuth();
   const [isSending, setIsSending] = useState(false);
   const { userData, setUserData } = useUserData();

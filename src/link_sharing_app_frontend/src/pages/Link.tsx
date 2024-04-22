@@ -1,18 +1,18 @@
-import EmptyLinks from "./EmptyLinks";
-import Button from "../../UI/Button/Button";
+import EmptyLinks from "../components/DashboardPage/LinkPage/EmptyLinks";
+import Button from "../components/UI/Button/Button";
 import { useForm, useFieldArray } from "react-hook-form";
-import LinkItem from "./LinkItem";
-import { useAuth } from "../../../hooks/useAuth";
-import { link_sharing_app_backend as backend } from "../../../../../declarations/link_sharing_app_backend";
+import LinkItem from "../components/DashboardPage/LinkPage/LinkItem";
+import { useAuth } from "../hooks/useAuth";
+import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
 import { useState, useEffect } from "react";
 import { Principal } from "@dfinity/principal";
 import { useOutletContext, useRouteLoaderData } from "react-router-dom";
-import { UserData } from "../../../interface/UserData";
-import { LinkType } from "../../../interface/LinkType";
-import { useUserData } from "../../../hooks/useUserData";
-import Message from "../../Message";
+import { UserData } from "../interface/UserData";
+import { LinkType } from "../interface/LinkType";
+import { useUserData } from "../hooks/useUserData";
+import Message from "../components/Message";
 
-export default function CustomLinkPage() {
+export default function LinkPage() {
   const { principal } = useAuth();
   const { userData, setUserData, getUserData } = useUserData();
   const [isSending, setIsSending] = useState(false);

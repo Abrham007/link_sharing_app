@@ -5,7 +5,7 @@ export default function PreviewItem({
   page = "preview",
 }: {
   id: string;
-  href?: string;
+  href: string;
   page?: string;
 }) {
   const link = LinkList.find((link) => link.id === id);
