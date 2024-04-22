@@ -1,13 +1,19 @@
 import { Link } from "react-router-dom";
 import PreviewItem from "./PreviewItem";
-import { useUserData } from "../../hooks/useUserData";
-import { UserData } from "../../interface/UserData";
-import Message from "../Message";
+import { useUserData } from "../hooks/useUserData";
+import { UserData } from "../interface/UserData";
+import Message from "./Message";
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import Button from "./UI/Button/Button";
 
 export default function PreviewPage() {
   const { userData }: { userData: UserData } = useUserData();
-  const [openMessage, setOpenMessage] = useState(false);
+  const { principal } = useAuth();
+  const [openMessage, setOpenMessage] = useState<{
+    text: string;
+    error: boolean;
+  } | null>(null);
 
   let hasImage = userData?.profile?.profilePic.length > 0;
 
@@ -17,11 +23,28 @@ export default function PreviewPage() {
   );
 
   function handleCloseMessage() {
-    setOpenMessage(false);
+    setOpenMessage(null);
+  }
+
+  async function handleCopyToClipboard() {
+    try {
+      let origin = window.location.origin;
+      let userUrl = `${origin}/user/${principal}`;
+      await navigator.clipboard.writeText(userUrl);
+      setOpenMessage({
+        text: "The link has been copied to your clipboard!",
+        error: false,
+      });
+    } catch (err) {
+      setOpenMessage({
+        text: "The link could not be copied to your clipboard!",
+        error: true,
+      });
+    }
   }
 
   return (
-    <div className="flex flex-col gap-[60px] md:gap-[126px] lg:gap-[106px] md:p-6">
+    <div className="flex flex-col gap-[60px] md:gap-[126px] lg:gap-[106px] md:p-6 mb-6">
       <div
         className="hidden fixed top-0 left-0 -z-10 md:block md:w-full md:h-[357px] bg-Purple rounded-b-[32px]"
         role="presentation"
@@ -34,12 +57,12 @@ export default function PreviewPage() {
           >
             Back to Editor
           </Link>
-          <Link
-            to="/"
+          <button
+            onClick={handleCopyToClipboard}
             className={`w-[160px] flex justify-center px-[27px] py-[11px] text-lg text-White bg-Purple rounded-lg hover:bg-LightPurple`}
           >
             Share Link
-          </Link>
+          </button>
         </nav>
       </header>
       <main className="flex flex-col items-center gap-14 md:w-min md:mx-auto md:px-14 md:py-12 bg-White rounded-3xl md:shadow-[0_0px_32px_0px_rgba(0,0,0,0.10)]">
@@ -70,7 +93,8 @@ export default function PreviewPage() {
       {openMessage && (
         <Message
           icon="/images/icon-link-copied-to-clipboard.svg"
-          text="The link has been copied to your clipboard!"
+          text={openMessage.text}
+          error={openMessage.error}
           handleCloseMessage={handleCloseMessage}
         ></Message>
       )}

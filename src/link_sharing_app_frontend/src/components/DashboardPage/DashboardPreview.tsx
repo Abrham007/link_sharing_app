@@ -1,6 +1,6 @@
 import { useUserData } from "../../hooks/useUserData";
 import { UserData } from "../../interface/UserData";
-import PreviewItem from "../PreviewPage/PreviewItem";
+import PreviewItem from "../PreviewItem";
 
 export default function DashboardPreview() {
   const { userData }: { userData: UserData } = useUserData();
