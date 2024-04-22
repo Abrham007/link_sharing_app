@@ -2,7 +2,6 @@ import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
 import Button from "../components/UI/Button/Button";
 import { useAuth } from "../hooks/useAuth";
-import { useUserData } from "../hooks/useUserData";
 import { useState } from "react";
 import logoIcon from "/images/logo-devlinks-small.svg";
 import { Principal } from "@dfinity/principal";
@@ -18,7 +17,6 @@ export default function AuthenticationPage() {
     logout,
   } = useAuth();
 
-  const { getUserData } = useUserData();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();

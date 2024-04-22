@@ -5,7 +5,6 @@ import ProfileInputs from "../components/DashboardPage/ProfilePage/ProfileInputs
 import { useForm } from "react-hook-form";
 import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
 import { Principal } from "@dfinity/principal";
-import { useLoaderData, useRouteLoaderData } from "react-router-dom";
 import { UserData } from "../interface/UserData";
 import { useUserData } from "../hooks/useUserData";
 import Message from "../components/Message";

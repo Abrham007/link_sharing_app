@@ -7,7 +7,6 @@ import DashboardLayout from "./DashboardPage/DashboardLayout";
 import PreviewPage from "../pages/Preview";
 import LinkPage from "../pages/Link";
 import ProfilePage from "../pages/Profile";
-import PreviewLayout from "./ProtectedLayout";
 import ProtectedLayout from "./ProtectedLayout";
 import AuthenticationPage from "../pages/Authentication";
 import RootLayout from "./RootLayout";

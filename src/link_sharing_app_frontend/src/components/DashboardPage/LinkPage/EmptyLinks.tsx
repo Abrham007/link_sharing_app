@@ -1,4 +1,3 @@
-import Button from "../../UI/Button/Button";
 export default function EmptyLinks({
   purpose = "empty",
 }: {

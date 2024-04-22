@@ -5,8 +5,6 @@ import LinkItem from "../components/DashboardPage/LinkPage/LinkItem";
 import { useAuth } from "../hooks/useAuth";
 import { link_sharing_app_backend as backend } from "../../../declarations/link_sharing_app_backend";
 import { useState, useEffect } from "react";
-import { Principal } from "@dfinity/principal";
-import { useOutletContext, useRouteLoaderData } from "react-router-dom";
 import { UserData } from "../interface/UserData";
 import { LinkType } from "../interface/LinkType";
 import { useUserData } from "../hooks/useUserData";

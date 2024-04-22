@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, useEffect, useState } from "react";
+import { InputHTMLAttributes, useEffect, useState } from "react";
 import DropFile from "./DropFile";
 import { useUserData } from "../../../hooks/useUserData";
 import { UserData } from "../../../interface/UserData";

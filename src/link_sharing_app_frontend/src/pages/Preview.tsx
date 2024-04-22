@@ -5,7 +5,6 @@ import { UserData } from "../interface/UserData";
 import Message from "../components/Message";
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import Button from "../components/UI/Button/Button";
 
 export default function PreviewPage() {
   const { userData }: { userData: UserData } = useUserData();

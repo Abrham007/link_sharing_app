@@ -1,9 +1,4 @@
-import {
-  Control,
-  ErrorOption,
-  UseFormRegister,
-  Controller,
-} from "react-hook-form";
+import { Controller } from "react-hook-form";
 import ImageInput from "./ImageInput";
 import TextInput from "./TextInput";
 
