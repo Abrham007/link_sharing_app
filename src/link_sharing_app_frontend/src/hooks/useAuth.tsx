@@ -23,13 +23,13 @@ export function useAuthClient() {
   const [userActor, setUserActor] = useState<unknown | null>(null);
 
   useEffect(() => {
-    async function initauthClient() {
+    async function initAuthClient() {
       let client = await AuthClient.create();
       await updateClient(client);
       await authenticate(client);
     }
 
-    initauthClient();
+    initAuthClient();
   }, []);
 
   async function loginWithNFID() {
@@ -72,6 +72,14 @@ export function useAuthClient() {
     return principal;
   }
 
+  async function loginWithDummyAccount() {
+    const principal = Principal.fromText(
+      "ndfdb-izceb-c36o6-e3xcd-w4y7q-3iw5w-3qndk-wbvs3-3e3kv-bsnp3-aae"
+    );
+    setPrincipal(principal);
+    setIsAuthenticated(true);
+  }
+
   async function logout() {
     await authClient?.logout();
     if (authClient) {
@@ -107,6 +115,7 @@ export function useAuthClient() {
     authClient,
     loginWithNFID,
     loginWithInternetIdentity,
+    loginWithDummyAccount,
     logout,
     userActor,
     principal,
