@@ -14,7 +14,10 @@ export default function ProfileDetailsPage() {
   const { principal } = useAuth();
   const [isSending, setIsSending] = useState(false);
   const { userData, setUserData } = useUserData();
-  const [openMessage, setOpenMessage] = useState(false);
+  const [openMessage, setOpenMessage] = useState<{
+    text: string;
+    error: boolean;
+  } | null>(null);
 
   const defaultValue = userData?.profile ?? {
     firstName: "",
@@ -56,14 +59,20 @@ export default function ProfileDetailsPage() {
       data.profilePic = userData.profile.profilePic;
       await backend.addProfile(principal, data);
       setIsSending(false);
-      setOpenMessage(true);
+      setOpenMessage({
+        text: "Your changes have been successfully saved!",
+        error: false,
+      });
     } catch (error) {
-      console.log(error);
+      setOpenMessage({
+        text: "Your changes could not be saved!. Please try again",
+        error: true,
+      });
     }
   }
 
   function handleCloseMessage() {
-    setOpenMessage(false);
+    setOpenMessage(null);
   }
 
   return (
@@ -96,7 +105,8 @@ export default function ProfileDetailsPage() {
       {openMessage && (
         <Message
           icon="/images/icon-changes-saved.svg"
-          text="Your changes have been successfully saved!"
+          text={openMessage.text}
+          error={openMessage.error}
           handleCloseMessage={handleCloseMessage}
         ></Message>
       )}
