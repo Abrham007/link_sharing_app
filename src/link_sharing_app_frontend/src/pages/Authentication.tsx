@@ -22,7 +22,7 @@ export default function AuthenticationPage() {
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
-  let isLogin = searchParams.get("mode") !== "signup";
+  let isLogin = searchParams.get("mode") === "login";
 
   let title = "Login";
   let subtitle = "Add your details below to get back into the app";
@@ -45,12 +45,10 @@ export default function AuthenticationPage() {
   }
 
   async function handleLogin(fn: () => Promise<void>) {
-    setIsLoading(true);
     let principal: any = await fn();
 
-    console.log(principal.toText());
+    setIsLoading(true);
     let response = await actionFn(principal);
-    console.log(response);
 
     if (response) {
       await authenticate(authClient);
