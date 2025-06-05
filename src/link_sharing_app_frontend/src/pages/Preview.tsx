@@ -52,7 +52,7 @@ export default function PreviewPage() {
         <nav className="w-full flex justify-between">
           <Link
             to="/dashboard/links"
-            className={`w-[160px] flex justify-center px-[27px] py-[11px] text-lg text-Purple bg-transparent hover:bg-LightPurple rounded-lg border border-solid border-Purple`}
+            className={`w-[160px] flex justify-center px-[27px] py-[11px] text-lg text-Purple bg-transparent hover:bg-LightPurple rounded-lg border border-solid border-Purple text-nowrap`}
           >
             Back to Editor
           </Link>

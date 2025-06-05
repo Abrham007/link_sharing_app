@@ -105,7 +105,7 @@ export default function AuthenticationPage() {
               disabled={isLoading}
             >
               <img
-                src="https://nfid.one/icons/favicon-96x96.png"
+                src="./images/nfid-one-icon.png"
                 alt=""
                 width={20}
                 height={20}
@@ -121,7 +121,7 @@ export default function AuthenticationPage() {
               disabled={isLoading}
             >
               <img
-                src="https://cryptologos.cc/logos/internet-computer-icp-logo.svg?v=029"
+                src="./images/internet-computer-icp-logo.svg"
                 alt=""
                 width={20}
                 height={20}
